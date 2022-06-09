@@ -1,8 +1,8 @@
 import { Formik, Form } from "formik";
-import { postForm } from "../lib/axios";
+import { postImage, postDoc } from "../lib/axios";
 
 const ImageForm: React.FC = () => {
-  return <Formik initialValues={{ text: "" }} onSubmit={async (values) => { console.log(values); const res = await postForm(values); console.log(res); }}>
+  return <Formik initialValues={{ text: "" }} onSubmit={async (values) => { const res = await postDoc(values); console.log(res); }}>
     {({ setFieldValue, values, handleChange }) => (
       <Form>
         <>
@@ -11,10 +11,10 @@ const ImageForm: React.FC = () => {
         </>
         <>
           <label>Image</label>
-          <input type="file" name="image"
+          <input type="file" name="document"
             onChange={(e) => {
               e.currentTarget.files instanceof FileList
-                ? setFieldValue("image", e.currentTarget.files[0])
+                ? setFieldValue("document", e.currentTarget.files[0])
                 : null;
             }}
           />

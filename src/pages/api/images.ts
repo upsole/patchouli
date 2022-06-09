@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from "@prisma/client";
+import {prisma} from "../../lib/db";
 import path from "path";
 import nextConnect from "next-connect";
 import multer from "multer";
@@ -15,7 +15,7 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_SECRET
 })
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 const upload = multer({
   storage: multer.diskStorage({}),
   fileFilter: (_, file, cb) => {
@@ -54,7 +54,6 @@ handler.post(async (req, res) => {
     }
   })
   res.status(200).json(newPost)
-  // PRISMA CODU
 })
 
 export default handler;

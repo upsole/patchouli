@@ -10,12 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
+model Entry {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
   text    String
+  tag     String
   img_url String?
+  file_url String?
 
-  @@map("post")
+  @@map("entry")
 }
