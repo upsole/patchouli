@@ -5,6 +5,10 @@ import nextConnect from "next-connect";
 import multer from "multer";
 import cloudinary from "cloudinary";
 
+interface NextRequest extends NextApiRequest {
+  file: any;
+}
+
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -23,21 +27,19 @@ const upload = multer({
     cb(null, true);
   },
 });
-const handler = nextConnect<NextApiRequest, NextApiResponse>({
+const handler = nextConnect<NextRequest, NextApiResponse>({
   // onNoMatch: (req, res) => { res.status(404).end("Not Found") }
   onError(err, req, res) {
     console.log(err);
     res.status(500).json({error: "Route Error", stack: err})
   },
   onNoMatch(_, res) {
-    res.status(405).json({ error: "Ay Lmao Method not allowed" })
+    res.status(405).json({ error: "Method not allowed" })
   }
 })
 
-// const uploadMiddleware = upload.array('theFiles')
 const uploadMiddleware = upload.single("image");
 handler.use(uploadMiddleware)
-// handler.use(upload)
 
 handler.get((_: NextApiRequest, res) => {
   res.status(200).json({ status: "success" })
