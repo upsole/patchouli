@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import nextConnect from "next-connect";
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "../../../lib/s3Client";
 import { prisma } from "../../../lib/db";
 
@@ -21,10 +21,14 @@ const handler = nextConnect<NextRequest, NextApiResponse>({
 
 handler.get(async (req, res) => {
   const { id } = req.query;
-  const entryExists = await prisma.entry.findUnique({ where: { id: id } })
+  const entryExists = await prisma.entry.findUnique({ where: { id: id as string } });
   if (entryExists) {
-    const bucketParams = { Bucket: "wrabbit", Key: entryExists.file_url }
+    const bucketParams = { Bucket: "wrabbit", Key: entryExists.file_url as string }
     const signedUrl = await getSignedUrl(s3Client, new GetObjectCommand(bucketParams), {expiresIn: 15 * 60})
-  } else { res.status(404).json({ error: "Not found" }) }
-})
+    res.status(200).json({url: signedUrl, entryExists})
+  } else {
+    res.status(404).json({ error: "Not found" });
+  }
+});
 
+export default handler;
