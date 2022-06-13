@@ -10,11 +10,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.107.0",
-    "@aws-sdk/lib-storage": "^3.107.0",
     "@aws-sdk/s3-request-presigner": "^3.107.0",
     "@prisma/client": "3.15.0",
-    "@types/multer-s3": "^2.7.12",
-    "aws-sdk": "^2.1151.0",
     "axios": "^0.27.2",
     "cloudinary": "^1.30.0",
     "formik": "^2.2.9",
@@ -26,7 +23,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-query": "^3.39.1",
-    "uuidv4": "^6.2.13"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/multer": "^1.4.7",

@@ -2,8 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import nextConnect from "next-connect";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { s3Client } from "../../../lib/s3Client";
-import { prisma } from "../../../lib/db";
+import { s3Client, spacesConfig } from "../../../server/s3Client";
+import { prisma } from "../../../server/db";
+
+const {$bucket} = spacesConfig;
 
 interface NextRequest extends NextApiRequest {
   file: any;
@@ -23,7 +25,7 @@ handler.get(async (req, res) => {
   const { id } = req.query;
   const entryExists = await prisma.entry.findUnique({ where: { id: id as string } });
   if (entryExists) {
-    const bucketParams = { Bucket: "wrabbit", Key: entryExists.file_url as string }
+    const bucketParams = { Bucket: $bucket, Key: entryExists.file_key as string }
     const signedUrl = await getSignedUrl(s3Client, new GetObjectCommand(bucketParams), {expiresIn: 15 * 60})
     res.status(200).json({url: signedUrl, entryExists})
   } else {

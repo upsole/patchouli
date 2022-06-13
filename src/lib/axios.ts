@@ -29,7 +29,7 @@ export async function postImage(form: any) {
 export async function postDoc(form: any) {
   try {
     const formData = buildFormData(form);
-    const res = await instance.post("/upload", formData, { headers: { "Content-Type": "multipart/form-data" } })
+    const res = await instance.post("/entries", formData, { headers: { "Content-Type": "multipart/form-data" } })
     return res.data
   } catch (err) {
     console.log(err);

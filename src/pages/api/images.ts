@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {prisma} from "../../lib/db";
+import {prisma} from "../../server/db";
 import path from "path";
 import nextConnect from "next-connect";
 import multer from "multer";
@@ -47,9 +47,10 @@ handler.get((_: NextApiRequest, res) => {
 
 handler.post(async (req, res) => {
   console.log(req.file);
-  const newPost = await prisma.post.create({
+  const newPost = await prisma.entry.create({
     data: {
       text: req.body.text,
+      tag: req.body.tag,
       img_url: req.file ? await cloudinary.v2.uploader.upload(req.file!.path).then((i) => i.secure_url) : undefined,
     }
   })

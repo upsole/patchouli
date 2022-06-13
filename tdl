@@ -1,5 +1,13 @@
 TDL:
-    Public Link Acces (ACL in S3 params??)
     Form Controls Image & Doc separately
-    GET upload/[id].ts from uuid 
-    Config File For Bucket Vars
+
+    Auth
+
+    API Foos & Views -> List Entries, Query By Tag, Search Component 
+
+
+EXTRA:
+  Fields: Author, Related to?, Extension
+  README
+  SetUp Saas Guide
+
