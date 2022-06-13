@@ -1197,6 +1197,18 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
+"@types/streamifier@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/streamifier/-/streamifier-0.1.0.tgz#ff2fad6dccd1df65ba69c851999e35990fc8508b"
+  integrity sha512-pAGnUJg5pMAKv5ctJudPaGJHEuU/tkgN/F3tC5kQ5YHKS5gpfRZVVmLHE8t3h8H4Nn2JMJxf6T7h4QvSL3H/ug==
+  dependencies:
+    "@types/node" "*"
+
+"@types/uuid@^8.3.4":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
+
 "@typescript-eslint/parser@^5.21.0":
   version "5.27.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.27.1.tgz#3a4dcaa67e45e0427b6ca7bb7165122c8b569639"
@@ -3216,6 +3228,11 @@ stream-browserify@3.0.0:
   dependencies:
     inherits "~2.0.4"
     readable-stream "^3.5.0"
+
+streamifier@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/streamifier/-/streamifier-0.1.1.tgz#97e98d8fa4d105d62a2691d1dc07e820db8dfc4f"
+  integrity sha512-zDgl+muIlWzXNsXeyUfOk9dChMjlpkq0DRsxujtYPgyJ676yQ8jEm6zzaaWHFDg5BNcLuif0eD2MTyJdZqXpdg==
 
 streamsearch@^1.1.0:
   version "1.1.0"

@@ -15,7 +15,6 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_SECRET
 })
 
-// const prisma = new PrismaClient();
 const upload = multer({
   storage: multer.diskStorage({}),
   fileFilter: (_, file, cb) => {

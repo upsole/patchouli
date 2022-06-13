@@ -23,6 +23,16 @@ const ImageForm: React.FC = () => {
               }}
             />
           </>
+          <>
+            <label>Image</label>
+            <input type="file" name="file"
+              onChange={(e) => {
+                e.currentTarget.files instanceof FileList
+                  ? setFieldValue("image", e.currentTarget.files[0])
+                  : null;
+              }}
+            />
+          </>
           <button type="submit"> Submit </button>
       </Form>
 
