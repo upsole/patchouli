@@ -12,6 +12,7 @@ export const instance = axios.create({ baseURL: $api_url, })
 export async function listEntries() {
   try {
     const res = await instance.get("/entries")
+    console.log(res.data);
     return res.data
   } catch (err) {
     if (axios.isAxiosError(err)) {

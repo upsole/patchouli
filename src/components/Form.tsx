@@ -1,6 +1,12 @@
 import { Formik, Form } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { postEntry } from "../lib/axios";
+import * as Yup from "yup";
+
+const entrySchema = Yup.object({
+  text: Yup.string().required("Required"),
+  tags: Yup.string().required("Required")
+})
 
 const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
@@ -11,15 +17,17 @@ const EntryForm: React.FC = () => {
   });
   return (
     <Formik
-      initialValues={{ text: "", tag: "" }}
+      initialValues={{ text: "", tags: "" }}
+      validationSchema={entrySchema}
       onSubmit={async (values) => {
+        values.tags = values.tags.replaceAll(/ +/g, ",").replaceAll(/,+/g, ",").replace(/,$/, "")
         postMutation.mutateAsync(values);
       }}
     >
-      {({ setFieldValue, values, handleChange }) => (
+      {({ setFieldValue, values, handleChange, errors }) => (
         <Form>
           <>
-            <label> Text </label>
+            <label> Text {errors.text && <span>{errors.text}</span> } </label>
             <input
               type="text"
               name="text"
@@ -28,11 +36,11 @@ const EntryForm: React.FC = () => {
             />
           </>
           <>
-            <label> Tag </label>
+            <label> Tag {errors.tags && <span>{errors.tags}</span> } </label>
             <input
               type="text"
-              name="tag"
-              value={values.tag}
+              name="tags"
+              value={values.tags}
               onChange={handleChange}
             />
           </>

@@ -78,7 +78,7 @@ handler.post(async (req, res) => {
         data: {
           id: id,
           user: { connect: { email: session.user!.email as string } },
-          tag: req.body.tag ? req.body.tag : undefined,
+          tags: req.body.tags ? req.body.tags : undefined,
           text: req.body.text,
           file_key: bucketParams.Key,
           img_url: req.files.image
@@ -94,7 +94,7 @@ handler.post(async (req, res) => {
         data: {
           id: id,
           user: { connect: { email: session.user!.email as string } },
-          tag: req.body.tag,
+          tags: req.body.tags,
           text: req.body.text,
           img_url: req.files.image
             ? await uploadImageStream(req.files.image[0].buffer).then(

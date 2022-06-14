@@ -11,18 +11,18 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -36,6 +36,7 @@ model Session {
   expires      DateTime
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("session")
 }
 
@@ -65,13 +66,13 @@ model Entry {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
-  text    String
-  tag     String
-  img_url String?
+  text     String
+  tags     String
+  img_url  String?
   file_key String?
 
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("entry")
 }

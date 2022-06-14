@@ -4,9 +4,26 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
+// const useListEntriesQuery = () => {
+//   const entriesQuery = useQuery(
+//     "listEntries",
+//     () => {
+//       return listEntries();
+//     },
+//     { refetchOnWindowFocus: false }
+//   );
+//   return {
+//     ...entriesQuery,
+//     data: entriesQuery.data
+//     // data: ["asd", "bdfe"]
+//   }
+// }
+
+
 const ListEntries: React.FC = () => {
   const router = useRouter();
   const { status } = useSession();
+  // const {data, isLoading} = useListEntriesQuery();
   const { data, isLoading } = useQuery(
     "listEntries",
     () => {
@@ -16,12 +33,16 @@ const ListEntries: React.FC = () => {
   );
   if (isLoading) return <h3>Loading...</h3>;
   if (data && status === "authenticated") {
+    console.log(data);
     return (
       <ul>
         {data.length > 0 ? (
           data.map((entry: any) => (
             <li key={entry.id}>
               <h4>{entry.text}</h4>
+              <ul>
+                {entry.tags.split(",").map((t, n) => { return <li key={n}> {t} </li> })}
+              </ul>
               {entry.file_key && (
                 <button
                   onClick={async () => {
