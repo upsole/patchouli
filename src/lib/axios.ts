@@ -7,7 +7,7 @@ interface ResponseError{
 
 const $api_url = "/api"
 
-const instance = axios.create({ baseURL: $api_url, })
+export const instance = axios.create({ baseURL: $api_url, })
 
 export async function postImage(form: any) {
   try {
