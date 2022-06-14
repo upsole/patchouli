@@ -1,20 +1,18 @@
 import type { NextPage } from "next";
+import ListEntries from "../components/ListEntries";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
-  // const {session, loading} = useSession();
-  // const {data: session, status} = useSession();
   const sessionInfo = useSession();
-  console.log(sessionInfo);
   return (
     <main>
       <h1>Home Page</h1>
 
       {sessionInfo.status === "authenticated" ? (
         <>
+          <a href="/entries/new">Upload New Entry</a>
           <h2> Signed In </h2>{" "}
           <button onClick={() => signOut()}> Sign Out </button>
-          <a href="/upload"> Upload </a>
         </>
       ) : (
         <>
@@ -22,6 +20,7 @@ const Home: NextPage = () => {
           <button onClick={() => signIn()}> Sign In </button>
         </>
       )}
+      <ListEntries />
     </main>
   );
 };

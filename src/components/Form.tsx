@@ -1,21 +1,46 @@
 import { Formik, Form } from "formik";
-import { postImage, postDoc } from "../lib/axios";
+import { useMutation, useQueryClient } from "react-query";
+import { postEntry } from "../lib/axios";
 
-const ImageForm: React.FC = () => {
-  return <Formik initialValues={{ text: "", tag: "" }} onSubmit={async (values) => { const res = await postDoc(values); console.log(res); }}>
-    {({ setFieldValue, values, handleChange }) => (
-      <Form>
+const EntryForm: React.FC = () => {
+  const queryClient = useQueryClient();
+  const postMutation = useMutation((newEntry) => postEntry(newEntry), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("listEntries");
+    },
+  });
+  return (
+    <Formik
+      initialValues={{ text: "", tag: "" }}
+      onSubmit={async (values) => {
+        postMutation.mutateAsync(values);
+      }}
+    >
+      {({ setFieldValue, values, handleChange }) => (
+        <Form>
           <>
             <label> Text </label>
-            <input type="text" name="text" value={values.text} onChange={handleChange} />
+            <input
+              type="text"
+              name="text"
+              value={values.text}
+              onChange={handleChange}
+            />
           </>
           <>
             <label> Tag </label>
-            <input type="text" name="tag" value={values.tag} onChange={handleChange} />
+            <input
+              type="text"
+              name="tag"
+              value={values.tag}
+              onChange={handleChange}
+            />
           </>
           <>
             <label>Doc</label>
-            <input type="file" name="document"
+            <input
+              type="file"
+              name="document"
               onChange={(e) => {
                 e.currentTarget.files instanceof FileList
                   ? setFieldValue("document", e.currentTarget.files[0])
@@ -25,7 +50,9 @@ const ImageForm: React.FC = () => {
           </>
           <>
             <label>Image</label>
-            <input type="file" name="file"
+            <input
+              type="file"
+              name="file"
               onChange={(e) => {
                 e.currentTarget.files instanceof FileList
                   ? setFieldValue("image", e.currentTarget.files[0])
@@ -34,11 +61,10 @@ const ImageForm: React.FC = () => {
             />
           </>
           <button type="submit"> Submit </button>
-      </Form>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
-    )}
-
-  </Formik>
-}
-
-export default ImageForm
+export default EntryForm;

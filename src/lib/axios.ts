@@ -9,10 +9,9 @@ const $api_url = "/api"
 
 export const instance = axios.create({ baseURL: $api_url, })
 
-export async function postImage(form: any) {
+export async function listEntries() {
   try {
-    const formData = buildFormData(form);
-    const res = await instance.post("/images", formData, { headers: { "Content-Type": "multipart/form-data" } })
+    const res = await instance.get("/entries")
     return res.data
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -24,9 +23,14 @@ export async function postImage(form: any) {
     }
     return { error: "Something went wrong" };
   }
+} 
+
+export async function getFileSignedUrl (id: string): Promise<string> {
+  const res = await instance.get(`/entries/${id}`)
+  return res.data.url
 }
 
-export async function postDoc(form: any) {
+export async function postEntry(form: any) {
   try {
     const formData = buildFormData(form);
     const res = await instance.post("/entries", formData, { headers: { "Content-Type": "multipart/form-data" } })
