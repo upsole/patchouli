@@ -37,8 +37,29 @@ const uploadMiddleware = upload.fields([
 ]);
 handler.use(uploadMiddleware);
 
-// hangler.get(async () => {})
+// LIST ENTRIES FOR A GIVEN USER
+handler.get(async (req, res) => {
+  const session = await getSession({ req });
+  if (!session) {
+    res.status(401).json({ error: "Unauthorized" });
+  } else {
+    const userExists = await prisma.user.findUnique({
+      where: { email: session!.user?.email as string },
+    });
+    if (!userExists) {
+      res.status(401).json({ error: "Unauthorized" });
+      res.end();
+    } else {
+      const entries = await prisma.entry.findMany({
+        where: { userId: userExists.id },
+      });
+      res.status(200).json(entries)
+    }
+  }
+  res.end();
+});
 
+// POST NEW ENTRY
 handler.post(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {

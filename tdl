@@ -1,10 +1,11 @@
 TDL:
-    Auth
+    Check Session refactor as middleware
 
     API Foos & Views -> List Entries, Query By Tag, Search Component 
 
 
 EXTRA:
+  
   Fields: Author, Related to?, Extension
   README
   SetUp Saas Guide
