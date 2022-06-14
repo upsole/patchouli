@@ -14,6 +14,7 @@ const Home: NextPage = () => {
         <>
           <h2> Signed In </h2>{" "}
           <button onClick={() => signOut()}> Sign Out </button>
+          <a href="/upload"> Upload </a>
         </>
       ) : (
         <>
