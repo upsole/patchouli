@@ -1,7 +1,9 @@
 import { Formik, Form } from "formik";
+import {useRouter} from "next/router"
 import { useMutation, useQueryClient } from "react-query";
 import { postEntry } from "../lib/axios";
 import * as Yup from "yup";
+import { useState } from "react";
 
 const entrySchema = Yup.object({
   text: Yup.string().required("Required"),
@@ -10,18 +12,24 @@ const entrySchema = Yup.object({
 
 const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const [uploading, setUploading] = useState(false);
   const postMutation = useMutation((newEntry) => postEntry(newEntry), {
+    onMutate: () => {
+      setUploading(true);
+    },
     onSuccess: () => {
+      setUploading(false)
       queryClient.invalidateQueries("listEntries");
     },
   });
   return (
     <Formik
-      initialValues={{ text: "", tags: "" }}
+      initialValues={{ text: "", tags: "",  }}
       validationSchema={entrySchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, actions) => {
         values.tags = values.tags.replaceAll(/ +/g, ",").replaceAll(/,+/g, ",").replace(/,$/, "")
-        postMutation.mutateAsync(values);
+        postMutation.mutateAsync(values).then(() => actions.resetForm());
       }}
     >
       {({ setFieldValue, values, handleChange, errors }) => (
@@ -68,7 +76,7 @@ const EntryForm: React.FC = () => {
               }}
             />
           </>
-          <button type="submit"> Submit </button>
+          <button type="submit"> {uploading ? "Uploading..." : "Submit" } </button>
         </Form>
       )}
     </Formik>

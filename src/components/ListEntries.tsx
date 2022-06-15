@@ -4,21 +4,6 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-// const useListEntriesQuery = () => {
-//   const entriesQuery = useQuery(
-//     "listEntries",
-//     () => {
-//       return listEntries();
-//     },
-//     { refetchOnWindowFocus: false }
-//   );
-//   return {
-//     ...entriesQuery,
-//     data: entriesQuery.data
-//     // data: ["asd", "bdfe"]
-//   }
-// }
-
 
 const ListEntries: React.FC = () => {
   const router = useRouter();

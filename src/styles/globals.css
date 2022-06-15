@@ -1,6 +1,13 @@
+/*
+===================================
+      COLOR THEMES
+===================================
+*/
 html {
   --text-color: #222;
   --bkg-color: #fff;
+  --shadow-color: rgba(0,0,0,.25);
+  --warning-color: hsl(0, 68%, 52%);
   color-scheme: light;
 }
 html.dark {
@@ -18,13 +25,14 @@ html.dark {
   html.light {
     --text-color: #222;
     --bkg-color: #fff;
+    --shadow-color: rgba(0,0,0,.25);
     color-scheme: light;
   }
 }
 
 body {
   background: var(--bkg-color);
-  color: var(--text-color)
+  color: var(--text-color);
 }
 
 /*
@@ -57,6 +65,14 @@ a:hover {
   text-decoration: underline;
 }
 
+button {
+  border: none;
+  background-color: inherit;
+}
+
+button:hover {
+  text-decoration-line: underline;
+}
 h1,
 h2,
 h3,
@@ -68,15 +84,6 @@ h6 {
   margin-bottom: 0.75rem;
 }
 
-button {
-  background-color: inherit;
-  color: inherit;
-
-  padding: .55em;
-  border: var(--text-color) solid 1px;
-  border-radius: 7px;
-}
-
 li {
   list-style: none;
 }
@@ -84,10 +91,93 @@ li {
 * {
   box-sizing: border-box;
 }
+/*
+===================================
+      GENERAL ELEMENTS
+===================================
+*/
+main {
+  padding: 1em;
+}
 
-/* main { */
-/*   height: 100vh; */
-/* } */
+main button {
+  background-color: inherit;
+  color: inherit;
+
+  padding: 0.55em;
+  border: var(--text-color) solid 1px;
+  border-radius: 7px;
+}
+
+.box {
+  border: solid 1px black;
+  border-radius: 7px;
+
+  box-shadow: 2px 2px 2px var(--shadow-color);
+
+  padding: 1em;
+}
+
+.container-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1em;
+}
+
+/*
+===================================
+      NAVBAR
+===================================
+*/
+nav {
+  width: 100vw;
+  height: 5em;
+
+  padding: 1em;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 5px 10px var(--shadow-color)
+}
+
+nav > div > * {
+  margin-left: 1em;
+}
+
+nav span {
+  font-weight: bold;
+}
+
+.theme-btn {
+  background-color: inherit;
+  color: inherit;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0.55em;
+  place-content: center;
+  border: var(--text-color) solid 1px;
+  border-radius: 7px;
+}
+
+.nav-btn {
+  padding: .5em;
+  border: 1px var(--text-color) solid;
+  border-radius: 7px;
+}
+
+/* TODO USE VARIABLES FOR COLOR  */
+.nav-btn:hover {
+  text-decoration-line: none;
+  color: white;
+  border-color: white;
+  box-shadow: 0 0 2px rgba(255,255,255, 0.75)
+}
 
 /*
 ===================================
@@ -95,22 +185,22 @@ li {
 ===================================
 */
 form {
-  border: 1px solid black;
-  border-radius: 8px;
 
   width: 25vw;
-
-  box-shadow: 0 0 5px rgba(0,0,0,.25);
-
-  margin: auto;
-  margin-top: 25vh;
   padding: 1em;
 
   display: flex;
   flex-direction: column;
 }
 
-form input, label {
+form span {
+  color: var(--warning-color);
+  font-size: 0.9rem;
+  margin: 1em;
+}
+
+form input,
+label {
   width: 75%;
   margin: auto;
 }
