@@ -1,25 +1,99 @@
+html {
+  --text-color: #222;
+  --bkg-color: #fff;
+  color-scheme: light;
+}
+html.dark {
+  --text-color: #eee;
+  --bkg-color: #121212;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* defaults to dark theme */
+  html {
+    --text-color: #eee;
+    --bkg-color: #121212;
+    color-scheme: dark;
+  }
+  html.light {
+    --text-color: #222;
+    --bkg-color: #fff;
+    color-scheme: light;
+  }
+}
+
+body {
+  background: var(--bkg-color);
+  color: var(--text-color)
+}
+
+/*
+===================================
+      RESETS
+===================================
+*/
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* font-size: 18px; */
+}
+
 html,
 body {
-  padding: 0;
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
+  text-decoration: none;
   color: inherit;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: capitalize;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+button {
+  background-color: inherit;
+  color: inherit;
+
+  padding: .55em;
+  border: var(--text-color) solid 1px;
+  border-radius: 7px;
+}
+
+li {
+  list-style: none;
 }
 
 * {
   box-sizing: border-box;
 }
 
-main {
-  border: 1px solid black;
-  height: 100vh;
-}
+/* main { */
+/*   height: 100vh; */
+/* } */
 
+/*
+===================================
+      FORM
+===================================
+*/
 form {
   border: 1px solid black;
   border-radius: 8px;

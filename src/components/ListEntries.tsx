@@ -33,7 +33,6 @@ const ListEntries: React.FC = () => {
   );
   if (isLoading) return <h3>Loading...</h3>;
   if (data && status === "authenticated") {
-    console.log(data);
     return (
       <ul>
         {data.length > 0 ? (
