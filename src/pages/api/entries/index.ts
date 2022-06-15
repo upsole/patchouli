@@ -40,6 +40,8 @@ handler.use(uploadMiddleware);
 // LIST ENTRIES FOR A GIVEN USER
 handler.get(async (req, res) => {
   const session = await getSession({ req });
+  const skip = req.query.skip || 0
+  const take = req.query.take || 5
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else {
@@ -51,6 +53,8 @@ handler.get(async (req, res) => {
       res.end();
     } else {
       const entries = await prisma.entry.findMany({
+        skip: skip as number,
+        take: take as number,
         where: { userId: userExists.id },
       });
       res.status(200).json(entries)

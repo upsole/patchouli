@@ -1,14 +1,13 @@
-import { listEntries } from "../lib/axios";
-import { useQuery } from "react-query";
+import { listEntries, deleteEntry } from "../lib/axios";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-
 const ListEntries: React.FC = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { status } = useSession();
-  // const {data, isLoading} = useListEntriesQuery();
   const { data, isLoading } = useQuery(
     "listEntries",
     () => {
@@ -16,6 +15,9 @@ const ListEntries: React.FC = () => {
     },
     { refetchOnWindowFocus: false }
   );
+  const deleteMutation = useMutation((id: string) => deleteEntry(id), {
+    onSuccess: () => queryClient.invalidateQueries("listEntries"),
+  });
   if (isLoading) return <h3>Loading...</h3>;
   if (data && status === "authenticated") {
     return (
@@ -25,7 +27,11 @@ const ListEntries: React.FC = () => {
             <li key={entry.id}>
               <h4>{entry.text}</h4>
               <ul>
-                {entry.tags.split(",").map((t, n) => { return <li key={n}> {t} </li> })}
+                {entry.tags.split(",").map((t, n) => {
+                  return <li key={n}> {t} 
+                    <button onClick={() => deleteMutation.mutateAsync(entry.id)}> Delete </button>
+                  </li>;
+                })}
               </ul>
               {entry.file_key && (
                 <button

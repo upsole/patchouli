@@ -1,7 +1,7 @@
 import axios from "axios";
 import { buildFormData } from "./buildFormData";
 
-interface ResponseError{
+interface ResponseError {
   error: string;
 }
 
@@ -11,7 +11,7 @@ export const instance = axios.create({ baseURL: $api_url, })
 
 export async function listEntries() {
   try {
-    const res = await instance.get("/entries")
+    const res = await instance.get(`/entries/`)
     return res.data
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -23,9 +23,10 @@ export async function listEntries() {
     }
     return { error: "Something went wrong" };
   }
-} 
+}
 
-export async function getFileSignedUrl (id: string): Promise<string> {
+// TODO GET ITEM by id does not request SIGNEDURL until needed
+export async function getFileSignedUrl(id: string): Promise<string> {
   const res = await instance.get(`/entries/${id}`)
   return res.data.url
 }
@@ -35,6 +36,22 @@ export async function postEntry(form: any) {
     const formData = buildFormData(form);
     const res = await instance.post("/entries", formData, { headers: { "Content-Type": "multipart/form-data" } })
     return res.data
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      if (err && err.response) {
+        return { error: err.response.data.error };
+      } else {
+        return { error: "Something went wrong" };
+      }
+    }
+    return { error: "Something went wrong" };
+  }
+}
+
+export async function deleteEntry(id: string) {
+  try {
+    const res = await instance.delete(`/entries/${id}`)
+    return res.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       if (err && err.response) {

@@ -12,11 +12,11 @@ const Navbar: React.FC = () => {
         {dark ? <FaSun /> : <FaMoon />}
       </button>
       <div>
-        <NextLink href="entries/new" passHref>
+        <NextLink href="/entries/new" passHref>
           <button className="nav-btn"> + New Entry </button>
         </NextLink>
 
-        <NextLink href="entries/" passHref>
+        <NextLink href="/entries" passHref>
           <button className="nav-btn"> View All </button>
         </NextLink>
         <NextLink href="/" passHref>

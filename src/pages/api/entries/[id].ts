@@ -22,9 +22,9 @@ const handler = nextConnect<NextRequest, NextApiResponse>({
   },
 });
 
+// TODO VALIDATE ENTRY BELONG TO USER
 handler.get(async (req, res) => {
-  const session = await getSession({req});
-  console.log(session);
+  const session = await getSession({ req });
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else {
@@ -45,6 +45,27 @@ handler.get(async (req, res) => {
       res.status(200).json({ url: signedUrl, entryExists });
     } else {
       res.status(404).json({ error: "Not found" });
+    }
+  }
+  res.end();
+});
+
+// TODO SENDS DELETE REQ TO ASSOCIATED RESOURCE
+handler.delete(async (req, res) => {
+  const session = await getSession({ req });
+  if (!session) {
+    res.status(401).json({ error: "Unauthorized" });
+  } else {
+    const { id } = req.query;
+    const entryExists = await prisma.entry.findUnique({
+      where: { id: id as string },
+    });
+    if (!entryExists) {
+      res.status(410).json({ error: "Not found" });
+      res.end();
+    } else {
+      await prisma.entry.delete({ where: { id: id as string } });
+      res.status(200).json({ message: `Entry ${entryExists!.id} deleted!` });
     }
   }
   res.end();
