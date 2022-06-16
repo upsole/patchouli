@@ -4,6 +4,11 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
+// const genterateAnchor = async (id: string) => {
+//   const url = await getFileSignedUrl(id);
+//   return <a href={url} target="_blank"> Download Document </a>
+// }
+
 const ListEntries: React.FC = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
