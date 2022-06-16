@@ -9,7 +9,7 @@ const $api_url = "/api"
 
 export const instance = axios.create({ baseURL: $api_url, })
 
-export async function listEntries(skip=0, take=10) {
+export async function listEntries(skip=0, take=9) {
   try {
     const res = await instance.get(`/entries?skip=${skip}&take=${take}`)
     return res.data

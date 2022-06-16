@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import ListEntries from "../components/ListEntries";
+import LandingEntries from "../components/LandingEntries";
 import Box from "../components/Box";
 import ContainerFlex from "../components/ContainerFlex";
 
@@ -7,9 +7,7 @@ const Home: NextPage = () => {
   return (
     <>
       <ContainerFlex>
-        <Box>
-          <ListEntries />
-        </Box>
+          <LandingEntries />
       </ContainerFlex>
     </>
   );

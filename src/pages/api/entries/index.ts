@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type {UploadApiResponse} from "cloudinary";
+import type { UploadApiResponse } from "cloudinary";
 import multer from "multer";
 // import streamifier from "stream/promises"
 import path from "path";
@@ -24,6 +24,7 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
+    console.log(err);
     res.status(500).json({ error: "Route Error", stack: err });
   },
   onNoMatch(_, res) {
@@ -42,7 +43,7 @@ handler.get(async (req, res) => {
   const session = await getSession({ req });
 
   const skip = Number(req.query.skip) || 0
-  const take = Number(req.query.take) || 10 
+  const take = Number(req.query.take) || 10
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else {
@@ -57,7 +58,9 @@ handler.get(async (req, res) => {
         skip: skip as number,
         take: take as number,
         where: { userId: userExists.id },
+        orderBy: [{createdAt: 'desc'}]
       });
+      // const entries = await prisma.entry.groupBy({by: ['tags']})
       res.status(200).json(entries)
     }
   }
@@ -79,7 +82,7 @@ handler.post(async (req, res) => {
         Body: req.files.document[0].buffer,
       };
       const s3Res = await s3Client.send(new PutObjectCommand(bucketParams));
-      const cloudResponse = await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse;
+      const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
       console.log("cloudinary:", cloudResponse);
       const newEntry = await prisma.entry.create({
         data: {
@@ -88,32 +91,21 @@ handler.post(async (req, res) => {
           tags: req.body.tags ? req.body.tags : undefined,
           text: req.body.text,
           file_key: bucketParams.Key,
-          img_url: cloudResponse.secure_url,
-          img_id: cloudResponse.public_id 
-          // img_url: req.files.image
-          //   ? await uploadImageStream(req.files.image[0].buffer).then(
-          //     (i: any) => i.secure_url
-          //   )
-          //   : undefined,
+          img_url: cloudResponse?.secure_url ? cloudResponse.secure_url : undefined,
+          img_id: cloudResponse?.public_id ? cloudResponse.public_id : undefined,
         },
       });
       res.status(200).json({ entry: newEntry, metadata: s3Res });
     } else {
-      const cloudResponse = await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse;
-      // console.log("cloudinary:", cloudResponse);
+      const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
           user: { connect: { email: session.user!.email as string } },
           tags: req.body.tags,
           text: req.body.text,
-          img_url: cloudResponse.secure_url,
-          img_id: cloudResponse.public_id 
-          // img_url: req.files.image
-          //   ? await uploadImageStream(req.files.image[0].buffer).then(
-          //     (i: any) => i.secure_url
-          //   )
-          //   : undefined,
+          img_url: cloudResponse?.secure_url ? cloudResponse.secure_url : undefined,
+          img_id: cloudResponse?.public_id ? cloudResponse.public_id : undefined,
         },
       });
       res.status(200).json({ entry: newEntry });

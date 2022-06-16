@@ -98,6 +98,11 @@ li {
 */
 main {
   padding: 1em;
+  display: flex;
+}
+
+main > div {
+  margin: auto;
 }
 
 main button {
@@ -116,6 +121,39 @@ main button {
   box-shadow: 2px 2px 2px var(--shadow-color);
 
   padding: 1em;
+
+  position: relative;
+}
+
+.box .bottom-row {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+
+  position: absolute;
+  bottom: 0;
+}
+
+.box .tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+
+
+.box .tags > li {
+  border: 1px solid white;
+
+  font-size: .5rem;
+
+  margin-left: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.box .buttons {
+  display: flex;
 }
 
 .container-flex {
@@ -123,7 +161,19 @@ main button {
   align-items: center;
   justify-content: center;
 
+  flex-wrap: wrap;
+
   padding: 1em;
+}
+
+.container-flex .box {
+  margin: 1em;
+  flex: 0 1 auto;
+
+  height: 10em;
+  width: 20em;
+
+  overflow: hidden;
 }
 
 /*
@@ -185,12 +235,17 @@ nav span {
 ===================================
 */
 form {
+  margin: auto;
 
   width: 25vw;
   padding: 1em;
 
   display: flex;
   flex-direction: column;
+}
+
+form textarea {
+  padding: 5px;
 }
 
 form span {

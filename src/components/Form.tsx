@@ -1,5 +1,5 @@
 import { Formik, Form } from "formik";
-import {useRouter} from "next/router"
+import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "react-query";
 import { postEntry } from "../lib/axios";
 import * as Yup from "yup";
@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const entrySchema = Yup.object({
   text: Yup.string().required("Required"),
-  tags: Yup.string().required("Required")
-})
+  tags: Yup.string().required("Required"),
+});
 
 const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
@@ -19,32 +19,39 @@ const EntryForm: React.FC = () => {
       setUploading(true);
     },
     onSuccess: () => {
-      setUploading(false)
+      setUploading(false);
       queryClient.invalidateQueries("listEntries");
     },
   });
   return (
     <Formik
-      initialValues={{ text: "", tags: "",  }}
+      initialValues={{ text: "", tags: "" }}
       validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
-        values.tags = values.tags.replaceAll(/ +/g, ",").replaceAll(/,+/g, ",").replace(/,$/, "")
-        postMutation.mutateAsync(values).then(() => actions.resetForm());
+        values.tags = values.tags
+          .replaceAll(/ +/g, ",")
+          .replaceAll(/,+/g, ",")
+          .replace(/,$/, "");
+        postMutation
+          .mutateAsync(values)
+          .then(() => actions.resetForm())
+          .then(() => router.push("/"));
       }}
     >
       {({ setFieldValue, values, handleChange, errors }) => (
         <Form>
           <>
-            <label> Text {errors.text && <span>{errors.text}</span> } </label>
-            <input
-              type="text"
+            <label> Text {errors.text && <span>{errors.text}</span>} </label>
+            <textarea
               name="text"
               value={values.text}
               onChange={handleChange}
+              cols={120}
+              rows={8}
             />
           </>
           <>
-            <label> Tag {errors.tags && <span>{errors.tags}</span> } </label>
+            <label> Tag {errors.tags && <span>{errors.tags}</span>} </label>
             <input
               type="text"
               name="tags"
@@ -76,7 +83,10 @@ const EntryForm: React.FC = () => {
               }}
             />
           </>
-          <button type="submit"> {uploading ? "Uploading..." : "Submit" } </button>
+          <button type="submit">
+            {" "}
+            {uploading ? "Uploading..." : "Submit"}{" "}
+          </button>
         </Form>
       )}
     </Formik>
