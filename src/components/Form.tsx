@@ -20,7 +20,7 @@ const EntryForm: React.FC = () => {
     },
     onSuccess: () => {
       setUploading(false);
-      queryClient.invalidateQueries("listEntries");
+      queryClient.invalidateQueries("landingEntries");
     },
   });
   return (

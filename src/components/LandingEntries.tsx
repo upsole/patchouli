@@ -6,19 +6,19 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-const ListEntries: React.FC = () => {
+const LandingEntries: React.FC = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { status } = useSession();
   const { data, isLoading } = useQuery(
-    "listEntries",
+    "landingEntries",
     () => {
       return listEntries();
     },
     { refetchOnWindowFocus: false }
   );
   const deleteMutation = useMutation((id: string) => deleteEntry(id), {
-    onSuccess: () => queryClient.invalidateQueries("listEntries"),
+    onSuccess: () => queryClient.invalidateQueries("landingEntries"),
   });
   if (isLoading) return <h3>Loading...</h3>;
   if (data && status === "authenticated") {
@@ -65,4 +65,4 @@ const ListEntries: React.FC = () => {
   }
 };
 
-export default ListEntries;
+export default LandingEntries;

@@ -1,5 +1,6 @@
+import ListEntries from "../../components/ListEntries";
 const AllEntries: React.FC = () => {
-    return <div> THIS WILL LIST EVERY ENTRY FILE EXPLORER STYLE </div>;
+  return <ListEntries />
 }
 
 export default AllEntries;

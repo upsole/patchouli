@@ -4,34 +4,37 @@
 ===================================
 */
 html {
-  --text-color: #222;
-  --bkg-color: #fff;
+  --text-color: hsla(0, 0%, 7%, 1);
+  --bkg-color-1: hsla(0, 0%, 93%, 1);
   --shadow-color: rgba(0,0,0,.25);
   --warning-color: hsl(0, 68%, 52%);
   color-scheme: light;
 }
 html.dark {
-  --text-color: #eee;
-  --bkg-color: #121212;
+  --text-color: hsla(0, 0%, 93%, 1);
+  --bkg-color-0: hsla(0, 0%, 0%, 1);
+  --bkg-color-1: hsla(0, 0%, 7%, 1);
+  --bkg-color-2: hsla(0, 0%, 15%, 1);
+
 }
 
 @media (prefers-color-scheme: dark) {
   /* defaults to dark theme */
   html {
     --text-color: #eee;
-    --bkg-color: #121212;
+    --bkg-color-1: #121212;
     color-scheme: dark;
   }
   html.light {
     --text-color: #222;
-    --bkg-color: #fff;
+    --bkg-color-1: #fff;
     --shadow-color: rgba(0,0,0,.25);
     color-scheme: light;
   }
 }
 
 body {
-  background: var(--bkg-color);
+  background: var(--bkg-color-1);
   color: var(--text-color);
 }
 
@@ -115,7 +118,7 @@ main button {
 }
 
 .box {
-  border: solid 1px black;
+  border: solid 1px var(--bkg-color-0);
   border-radius: 7px;
 
   box-shadow: 2px 2px 2px var(--shadow-color);
@@ -123,6 +126,10 @@ main button {
   padding: 1em;
 
   position: relative;
+}
+
+.stripes h5:nth-child(even) {
+  background-color: var(--bkg-color-1);
 }
 
 .box .bottom-row {
@@ -143,7 +150,7 @@ main button {
 
 
 .box .tags > li {
-  border: 1px solid white;
+  border: 1px solid var(--text-color);
 
   font-size: .5rem;
 
