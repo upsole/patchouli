@@ -129,7 +129,7 @@ main button {
 }
 
 .stripes h5:nth-child(even) {
-  background-color: var(--bkg-color-1);
+  background-color: var(--bkg-color-2);
 }
 
 .box .bottom-row {
