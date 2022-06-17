@@ -132,6 +132,10 @@ main button {
   background-color: var(--bkg-color-2);
 }
 
+.stripes .borrame{
+  display: flex;
+}
+
 .box .bottom-row {
   display: flex;
   justify-content: space-between;
@@ -146,8 +150,6 @@ main button {
   align-items: center;
   justify-content: space-evenly;
 }
-
-
 
 .box .tags > li {
   border: 1px solid var(--text-color);

@@ -1,51 +1,62 @@
 import { listEntries, deleteEntry } from "../lib/axios";
 import Fuse from "fuse.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Box from "./Box";
 import { useQuery } from "react-query";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-
-const useListEntryQuery = (skip: number) => {
-  const queryInfo = useQuery(
-    ["listEntries", skip],
-    () => {
-      return listEntries(skip, 15);
-    },
-    { refetchOnWindowFocus: false }
-  );
-  return queryInfo;
-};
 
 const ListEntries: React.FC = () => {
   const [skip, setSkip] = useState(0);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [filtered, setFiltered] = useState([]);
+  const [fuzzyQuery, setFuzzyQuery] = useState("");
+  const [entries, setEntries] = useState([]);
   const { status } = useSession();
-  const { data, isLoading } = useListEntryQuery(skip);
-
+  const { data, isLoading } = useQuery(
+    ["listEntries", skip],
+    () => {
+      return listEntries(skip, 10);
+    },
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        setEntries(data);
+      },
+    }
+  );
+  const fuse = new Fuse(data as any, { keys: ["text", "tags"] });
+  useEffect(() => {
+    if (fuzzyQuery) {
+      const result = fuse.search(fuzzyQuery);
+      setEntries(result.map((e) => e.item));
+    } else {
+      setEntries(data);
+    }
+  }, [fuzzyQuery]);
+  console.log(entries);
 
   if (isLoading) return <h3>Loading...</h3>;
-  if (data && status === "authenticated") {
+  if (entries && status === "authenticated") {
     return (
       <Box stripes>
         <button onClick={() => setSkip(skip + 1)}> + </button>
-        {/* <input */}
-        {/*   type="text" */}
-        {/*   value={searchQuery} */}
-        {/*   onChange={(e) => { */}
-        {/*     e.preventDefault(); */}
-        {/*     setSearchQuery(e.target.value); */}
-        {/*   }} */}
-        {/* /> */}
+        <input
+          type="text"
+          value={fuzzyQuery}
+          onChange={(e) => {
+            e.preventDefault();
+            setFuzzyQuery(e.target.value);
+          }}
+        />
         <div>
-          {data.map((d) => (
-            <h5>{d.text}</h5>
+          {entries.map((d) => (
+            <div key={d.id} className="borrame">
+              <h5>{d.text}</h5>
+              <p>{d.tags.split(",")}</p>
+            </div>
           ))}
         </div>
       </Box>
     );
-  } else if (!data) {
+  } else if (!entries) {
     return <h3> Empty List!</h3>;
   } else {
     return <h3> You need to login to access this page </h3>;
