@@ -6,9 +6,7 @@ import ContainerFlex from "../components/ContainerFlex";
 const Home: NextPage = () => {
   return (
     <>
-      <ContainerFlex>
           <LandingEntries />
-      </ContainerFlex>
     </>
   );
 };

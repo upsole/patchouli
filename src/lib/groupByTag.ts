@@ -21,3 +21,11 @@ export const processAndGroup = (arr: Entry[], property: string) => {
   });
   return groupBy(formattedArray, property);
 };
+
+export const processAndGroupByTag = (arr: Entry[]) => {
+  const formattedArray = arr.map((e) => {
+    e["tags"] = e["tags"].split(",");
+    return e;
+  });
+  return groupBy(formattedArray, "tags");
+};

@@ -102,7 +102,20 @@ li {
 main {
   padding: 1em;
   display: flex;
+
+  position: relative;
 }
+
+main > .tags {
+  position: absolute;
+  left: 29%;
+  top: 0;
+
+  display: flex;
+  justify-content: space-evenly;
+  width: 40%;
+}
+
 
 main > div {
   margin: auto;
