@@ -66,6 +66,7 @@ model Entry {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
+  title    String
   text     String
   tags     String
   img_url  String?
