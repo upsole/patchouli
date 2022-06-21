@@ -6,15 +6,22 @@ import * as Yup from "yup";
 import { useState } from "react";
 
 const entrySchema = Yup.object({
+  title: Yup.string().required("Required"),
   text: Yup.string().required("Required"),
   tags: Yup.string().required("Required"),
 });
+
+interface Values {
+  title: string;
+  text: string;
+  tags: string;
+}
 
 const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
-  const postMutation = useMutation((newEntry) => postEntry(newEntry), {
+  const postMutation = useMutation((newEntry: Values) => postEntry(newEntry), {
     onMutate: () => {
       setUploading(true);
     },
@@ -25,7 +32,7 @@ const EntryForm: React.FC = () => {
   });
   return (
     <Formik
-      initialValues={{ text: "", tags: "" }}
+      initialValues={{ title: "", text: "", tags: "" }}
       validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
         values.tags = values.tags
@@ -40,6 +47,11 @@ const EntryForm: React.FC = () => {
     >
       {({ setFieldValue, values, handleChange, errors }) => (
         <Form>
+          <> 
+            <label> Title {errors.title && <span>{errors.title}</span>} </label>
+            <input type="text" name="title" value={values.title} onChange={handleChange} />
+
+            </>
           <>
             <label> Text {errors.text && <span>{errors.text}</span>} </label>
             <textarea

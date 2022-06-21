@@ -1,0 +1,13 @@
+.stripes {
+  margin-top: 1em;
+}
+.stripes > div {
+  display: flex;
+
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.stripes > div:nth-child(even) {
+background-color: var(--bkg-color-2);
+}

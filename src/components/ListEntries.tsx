@@ -1,14 +1,18 @@
-import { listEntries, deleteEntry } from "../lib/axios";
+import { listEntries } from "../lib/axios";
 import Fuse from "fuse.js";
 import { useEffect, useState } from "react";
 import Box from "./Box";
 import { useQuery } from "react-query";
 import { useSession } from "next-auth/react";
 
+import type {Entry} from "~/types";
+
+import styles from "~/styles/ListEntries.module.css";
+
 const ListEntries: React.FC = () => {
   const [skip, setSkip] = useState(0);
   const [fuzzyQuery, setFuzzyQuery] = useState("");
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
   const { status } = useSession();
   const { data, isLoading } = useQuery(
     ["listEntries", skip],
@@ -22,7 +26,7 @@ const ListEntries: React.FC = () => {
       },
     }
   );
-  const fuse = new Fuse(data as any, { keys: ["text", "tags"] });
+  const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
   useEffect(() => {
     if (fuzzyQuery) {
       const result = fuse.search(fuzzyQuery);
@@ -46,11 +50,13 @@ const ListEntries: React.FC = () => {
             setFuzzyQuery(e.target.value);
           }}
         />
-        <div>
+        <div className={styles.stripes}>
           {entries.map((d) => (
-            <div key={d.id} className="borrame">
+            <div key={d.id}>
               <h5>{d.text}</h5>
-              <p>{d.tags.split(",")}</p>
+              {d.tags.split(",").map( (t) => {
+                return <p>{t}</p>
+              } )}
             </div>
           ))}
         </div>

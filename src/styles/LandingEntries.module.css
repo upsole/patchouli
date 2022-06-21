@@ -1,0 +1,42 @@
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+
+  position: absolute;
+  bottom: 0;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.tags > li {
+  border: 1px solid var(--text-color);
+
+  font-size: .5rem;
+
+  margin-left: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.selector-tags {
+  position: absolute;
+  left: 29%;
+  top: 0;
+
+  display: flex;
+  justify-content: space-evenly;
+  width: 40%;
+}
+
+/* .selector-tags :hover { */
+/*   text-decoration-line: none; */
+/* } */

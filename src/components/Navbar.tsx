@@ -2,25 +2,26 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useDarkMode } from "../lib/darkMode/useDarkMode";
 import { FaMoon, FaSun } from "react-icons/fa";
 import NextLink from "next/link";
+import styles from "~/styles/Navbar.module.css";
 
 const Navbar: React.FC = () => {
   const { data, status } = useSession();
   const [dark, setDark] = useDarkMode();
   return (
-    <nav>
-      <button onClick={() => setDark(!dark)} className="theme-btn">
+    <nav className={styles.navbar}>
+      <button onClick={() => setDark(!dark)} className={styles["theme-btn"]}>
         {dark ? <FaSun /> : <FaMoon />}
       </button>
-      <div>
+      <div className={styles["nav-btns"]}>
         <NextLink href="/entries/new" passHref>
-          <button className="nav-btn"> + New Entry </button>
+          <button> + New Entry </button>
         </NextLink>
 
         <NextLink href="/entries" passHref>
-          <button className="nav-btn"> View All </button>
+          <button> View All </button>
         </NextLink>
         <NextLink href="/" passHref>
-          <button className="nav-btn"> Home </button>
+          <button> Home </button>
         </NextLink>
       </div>
 
@@ -29,12 +30,12 @@ const Navbar: React.FC = () => {
           <p>
             Welcome, <span>{data.user!.name}</span>
           </p>
-          <button onClick={() => signOut()}> Sign Out </button>
+          <button onClick={() => signOut()} className={styles["sign-btn"]}> Sign Out </button>
         </div>
       ) : (
         <div>
           <p>Not signed in</p>
-          <button onClick={() => signIn()}> Sign In </button>
+          <button onClick={() => signIn()} className={styles["sign-btn"]}> Sign In </button>
         </div>
       )}
     </nav>

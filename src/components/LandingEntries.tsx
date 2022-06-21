@@ -7,9 +7,12 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-type Entry = any;
+import type {FormattedEntry} from "~/types";
 
-const formatTags = (arr: Entry[]) => {
+import styles from "~/styles/LandingEntries.module.css";
+
+
+const formatTags = (arr: any[]) => {
   try {
     return arr.map((e) => {
       e["tags"] = e["tags"].split(",");
@@ -20,7 +23,7 @@ const formatTags = (arr: Entry[]) => {
   }
 };
 
-const filterByK = (arr: Entry[], k: string) => {
+const filterByK = (arr: FormattedEntry[], k: string) => {
   if (k === "all") {
     return arr;
   } else {
@@ -28,13 +31,14 @@ const filterByK = (arr: Entry[], k: string) => {
   }
 };
 
-const getSetOfTags = (arr: Entry[]) => {
-  let set = new Set();
+const getSetOfTags = (arr: FormattedEntry[]) => {
+  let set = new Set<string>();
   for (let i = 0; i < arr.length; i++) {
-    for (let k in arr[i].tags) {
-      set.add(arr[i].tags[k]);
+    for (let k in arr[i]!.tags) {
+      set.add(arr[i]!.tags[k] as string);
     }
   }
+  //@ts-ignore Weird NextJS magic. Even tho es5 specified, iteration of set is possible
   return ["all", ...set];
 };
 
@@ -64,7 +68,7 @@ const LandingEntries: React.FC = () => {
   if (data && status === "authenticated") {
     return (
       <>
-        <div className="tags">
+        <div className={styles["selector-tags"]}>
           {tags.map((t, i) => {
             return (
               <button key={i} onClick={() => setSelectedTag(t)}>
@@ -75,19 +79,19 @@ const LandingEntries: React.FC = () => {
         </div>
         <ContainerFlex>
           {data.length > 0 ? (
-            filterByK(data, selectedTag).map((entry: Entry) => (
+            filterByK(data, selectedTag).map((entry: FormattedEntry) => (
               <Box key={entry.id}>
                 <p>
                   {entry.text.slice(0, 100)}
                   {entry.text.length > 100 ? "..." : ""}
                 </p>
-                <div className="bottom-row">
-                  <ul className="tags">
+                <div className={styles["bottom-row"]}>
+                  <ul className={styles.tags}>
                     {entry.tags.map((t: string, n: number) => {
                       return <li key={n}> {t}</li>;
                     })}
                   </ul>
-                  <div className="buttons">
+                  <div className={styles.buttons}>
                     {entry.file_key && (
                       <button
                         onClick={async () => {

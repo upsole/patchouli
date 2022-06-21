@@ -6,6 +6,7 @@
 html {
   --text-color: hsla(0, 0%, 7%, 1);
   --bkg-color-1: hsla(0, 0%, 93%, 1);
+  --bkg-color-2: hsla(0, 0%, 85%, .75);
   --shadow-color: rgba(0,0,0,.25);
   --warning-color: hsl(0, 68%, 52%);
   color-scheme: light;
@@ -74,7 +75,7 @@ button {
 }
 
 button:hover {
-  text-decoration-line: underline;
+  transform: scale(1.05);
 }
 h1,
 h2,
@@ -106,17 +107,6 @@ main {
   position: relative;
 }
 
-main > .tags {
-  position: absolute;
-  left: 29%;
-  top: 0;
-
-  display: flex;
-  justify-content: space-evenly;
-  width: 40%;
-}
-
-
 main > div {
   margin: auto;
 }
@@ -128,127 +118,6 @@ main button {
   padding: 0.55em;
   border: var(--text-color) solid 1px;
   border-radius: 7px;
-}
-
-.box {
-  border: solid 1px var(--bkg-color-0);
-  border-radius: 7px;
-
-  box-shadow: 2px 2px 2px var(--shadow-color);
-
-  padding: 1em;
-
-  position: relative;
-}
-
-.stripes h5:nth-child(even) {
-  background-color: var(--bkg-color-2);
-}
-
-.stripes .borrame{
-  display: flex;
-}
-
-.box .bottom-row {
-  display: flex;
-  justify-content: space-between;
-  width: 90%;
-
-  position: absolute;
-  bottom: 0;
-}
-
-.box .tags {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.box .tags > li {
-  border: 1px solid var(--text-color);
-
-  font-size: .5rem;
-
-  margin-left: 5px;
-  padding: 5px;
-  border-radius: 10px;
-}
-
-.box .buttons {
-  display: flex;
-}
-
-.container-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-wrap: wrap;
-
-  padding: 1em;
-}
-
-.container-flex .box {
-  margin: 1em;
-  flex: 0 1 auto;
-
-  height: 10em;
-  width: 20em;
-
-  overflow: hidden;
-}
-
-/*
-===================================
-      NAVBAR
-===================================
-*/
-nav {
-  width: 100vw;
-  height: 5em;
-
-  padding: 1em;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  box-shadow: 0 5px 10px var(--shadow-color)
-}
-
-nav > div > * {
-  margin-left: 1em;
-}
-
-nav span {
-  font-weight: bold;
-}
-
-.theme-btn {
-  background-color: inherit;
-  color: inherit;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0.55em;
-  place-content: center;
-  border: var(--text-color) solid 1px;
-  border-radius: 7px;
-}
-
-.nav-btn {
-  padding: .5em;
-  border: 1px var(--text-color) solid;
-  border-radius: 7px;
-}
-
-/* TODO USE VARIABLES FOR COLOR  */
-.nav-btn:hover {
-  text-decoration-line: none;
-  color: white;
-  border-color: white;
-  box-shadow: 0 0 2px rgba(255,255,255, 0.75)
 }
 
 /*

@@ -1,0 +1,52 @@
+.navbar {
+  width: 100vw;
+  height: 5em;
+
+  padding: 1em;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 5px 10px var(--shadow-color)
+}
+
+.navbar > div > * {
+  margin-left: 1em;
+}
+
+.navbar span {
+  font-weight: bold;
+}
+
+.theme-btn {
+  background-color: inherit;
+  color: inherit;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0.55em;
+  place-content: center;
+  border: var(--text-color) solid 1px;
+  border-radius: 7px;
+}
+
+.nav-btns button {
+  padding: .5em;
+  border: 1px var(--text-color) solid;
+  border-radius: 7px;
+}
+
+.nav-btns button:hover {
+  text-decoration-line: none;
+  color: var(--text-color);
+  border-color: var(--text-color);
+  box-shadow: 0 0 2px rgba(255,255,255, 0.75);
+
+}
+
+.sign-btn:hover {
+  text-decoration-line: underline;
+  transform: none;
+}

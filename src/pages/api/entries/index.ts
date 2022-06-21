@@ -87,6 +87,7 @@ handler.post(async (req, res) => {
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
+          title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
           tags: req.body.tags ? req.body.tags : undefined,
           text: req.body.text,
@@ -101,6 +102,7 @@ handler.post(async (req, res) => {
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
+          title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
           tags: req.body.tags,
           text: req.body.text,

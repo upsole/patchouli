@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  padding: 1em;
+}
+
+.container > div {
+  margin: 1em;
+  flex: 0 1 auto;
+
+  height: 10em;
+  width: 20em;
+
+  overflow: hidden;
+}

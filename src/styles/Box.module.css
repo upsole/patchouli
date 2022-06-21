@@ -1,0 +1,14 @@
+.box {
+  border: solid 1px var(--bkg-color-0);
+  border-radius: 7px;
+
+  box-shadow: 2px 2px 2px var(--shadow-color);
+
+  padding: 1em;
+
+  position: relative;
+}
+
+/* .stripes h5 { */
+/*   background-color: var(--bkg-color-2); */
+/* } */
