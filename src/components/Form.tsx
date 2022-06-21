@@ -84,8 +84,7 @@ const EntryForm: React.FC = () => {
             />
           </>
           <button type="submit">
-            {" "}
-            {uploading ? "Uploading..." : "Submit"}{" "}
+            {uploading ? "Uploading..." : "Submit"}
           </button>
         </Form>
       )}
