@@ -1,11 +1,11 @@
 import { listEntries } from "../lib/axios";
 import Fuse from "fuse.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Box from "./Box";
 import { useQuery } from "react-query";
 import { useSession } from "next-auth/react";
 
-import type {Entry} from "~/types";
+import type { Entry } from "~/types";
 
 import styles from "~/styles/ListEntries.module.css";
 
@@ -26,15 +26,19 @@ const ListEntries: React.FC = () => {
       },
     }
   );
-  const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
+  const memoFuse = useMemo(() => {
+    const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
+    return fuse;
+  }, [data]);
+  // const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
   useEffect(() => {
     if (fuzzyQuery) {
-      const result = fuse.search(fuzzyQuery);
+      const result = memoFuse.search(fuzzyQuery);
       setEntries(result.map((e) => e.item));
     } else {
-      setEntries(data);
+      setEntries(data as Entry[]);
     }
-  }, [fuzzyQuery]);
+  }, [fuzzyQuery, data, memoFuse]);
 
   if (isLoading) return <h3>Loading...</h3>;
   if (entries && status === "authenticated") {
@@ -53,9 +57,9 @@ const ListEntries: React.FC = () => {
           {entries.map((d) => (
             <div key={d.id}>
               <h5>{d.text}</h5>
-              {d.tags.split(",").map( (t) => {
-                return <p>{t}</p>
-              } )}
+              {d.tags.split(",").map((t, k: number) => {
+                return <p key={k}>{t}</p>;
+              })}
             </div>
           ))}
         </div>
