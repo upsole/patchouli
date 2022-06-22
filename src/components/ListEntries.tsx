@@ -35,7 +35,6 @@ const ListEntries: React.FC = () => {
       setEntries(data);
     }
   }, [fuzzyQuery]);
-  console.log(entries);
 
   if (isLoading) return <h3>Loading...</h3>;
   if (entries && status === "authenticated") {

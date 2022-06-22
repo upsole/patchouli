@@ -15,7 +15,7 @@ interface NextRequest extends NextApiRequest {
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    res.status(500).json({ error: "Route Error", stack: err });
+    res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
     res.status(405).json({ error: "Method not allowed" });
@@ -46,7 +46,7 @@ handler.get(async (req, res) => {
         new GetObjectCommand(bucketParams),
         { expiresIn: 5 * 60 }
       );
-      res.status(200).json({ url: signedUrl, entryExists });
+      res.status(200).json({ url: signedUrl });
     } else {
       if (!entryExists) {
         res.status(404).json({ error: "Not found" });

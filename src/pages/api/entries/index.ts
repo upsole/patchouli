@@ -24,8 +24,7 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    console.log(err);
-    res.status(500).json({ error: "Route Error", stack: err });
+    res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
     res.status(405).json({ error: "Method not allowed" });
@@ -83,7 +82,6 @@ handler.post(async (req, res) => {
       };
       const s3Res = await s3Client.send(new PutObjectCommand(bucketParams));
       const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
-      console.log("cloudinary:", cloudResponse);
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
@@ -96,7 +94,7 @@ handler.post(async (req, res) => {
           img_id: cloudResponse?.public_id ? cloudResponse.public_id : undefined,
         },
       });
-      res.status(200).json({ entry: newEntry, metadata: s3Res });
+      res.status(200).json({ entry: newEntry });
     } else {
       const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
       const newEntry = await prisma.entry.create({
