@@ -24,6 +24,7 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
+    console.log(err);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -58,6 +59,7 @@ handler.get(async (req, res) => {
         take: take as number,
         where: { userId: userExists.id },
         orderBy: [{ createdAt: "desc" }],
+        include: { tags: true },
       });
       // const entries = await prisma.entry.groupBy({by: ['tags']})
       res.status(200).json(entries);
@@ -93,7 +95,12 @@ handler.post(async (req, res) => {
           id: id,
           title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
-          tags: req.body.tags,
+          //TODO format tags to proper in Form
+          tags: {
+            create: req.body.tags.split(",").map((t: string) => {
+              return { name: t };
+            }),
+          },
           text: req.body.text,
           file_key: bucketParams.Key,
           img_url: cloudResponse?.secure_url
@@ -116,7 +123,11 @@ handler.post(async (req, res) => {
           id: id,
           title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
-          tags: req.body.tags,
+          tags: {
+            create: req.body.tags.split(",").map((t: string) => {
+              return { name: t };
+            }),
+          },
           text: req.body.text,
           img_url: cloudResponse?.secure_url
             ? cloudResponse.secure_url

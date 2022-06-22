@@ -45,7 +45,7 @@ const EntryForm: React.FC = () => {
   return (
     <Formik
       initialValues={{ title: "", text: "", tags: "" }}
-      validationSchema={entrySchema}
+      // validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
         values.tags = values.tags
           .replaceAll(/ +/g, ",")

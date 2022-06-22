@@ -66,11 +66,11 @@ model Entry {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
-  title    String
-  text     String
-  tags     String
-  img_url  String?
-  img_id   String?
+  title   String
+  text    String
+  tags    Tag[]
+  img_url String?
+  img_id  String?
 
   file_key String?
 
@@ -78,4 +78,20 @@ model Entry {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("entry")
+}
+
+model Tag {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  entries Entry[]
+  color   TagColor @default(Purple)
+
+}
+
+enum TagColor {
+  Purple
+  Pink
+  PinkLight
+  Orange
+  Yellow
 }
