@@ -58,26 +58,28 @@ const ListEntries: React.FC = () => {
           <button> TAGS </button>
         </div>
         <table className={styles.table}>
-          {entries.map((d) => (
-            <tr key={d.id}>
-              <td>{d.title}</td>
-              <td>
-                <div>
-                  {d.tags.map((t, k: number) => {
-                    return <p key={k}>{t.name}</p>;
-                  })}
-                </div>
-              </td>
-              <td>
-                <a href={`entries/${d.id}`}> Details </a>
-              </td>
+          <tbody>
+            {entries.map((d) => (
+              <tr key={d.id}>
+                <td>{d.title}</td>
                 <td>
-                {new Date(d.createdAt!).toLocaleString("en-IN", {month: "long", year: "numeric", day: "numeric"})}
-              </td>
+                  <div>
+                    {d.tags.map((t, k: number) => {
+                      return <p key={k}>{t.name}</p>;
+                    })}
+                  </div>
+                </td>
+                <td>
+                  <a href={`entries/${d.id}`}> Details </a>
+                </td>
+                  <td>
+                  {new Date(d.createdAt!).toLocaleString("en-IN", {month: "long", year: "numeric", day: "numeric"})}
+                </td>
+              </tr>
+            ))}
+            <tr>
             </tr>
-          ))}
-          <tr>
-          </tr>
+          </tbody>
         </table>
         {/* <div className={styles.stripes}> */}
         {/*   {entries.map((d) => ( */}
