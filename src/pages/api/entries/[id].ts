@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {__prod__} from "~/lib/constants";
+import { __prod__ } from "~/lib/constants";
 import { GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import nextConnect from "next-connect";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -16,8 +16,8 @@ interface NextRequest extends NextApiRequest {
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    __prod__ ? null : console.log(err); 
-    __prod__ ? null : console.log(req); 
+    __prod__ ? null : console.log(err);
+    __prod__ ? null : console.log(req);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -29,6 +29,8 @@ const handler = nextConnect<NextRequest, NextApiResponse>({
 // GENERATES SIGNED URL AND RETURNS ENTRY DETAILS
 handler.get(async (req, res) => {
   const session = await getSession({ req });
+  const getUrl = req.query.url === "true" ? true : false;
+
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else {
@@ -44,12 +46,17 @@ handler.get(async (req, res) => {
         Bucket: $bucket,
         Key: entryExists.file_key as string,
       };
-      const signedUrl = await getSignedUrl(
-        s3Client,
-        new GetObjectCommand(bucketParams),
-        { expiresIn: 5 * 60 }
-      );
-      res.status(200).json({ url: signedUrl });
+      if (getUrl) {
+        const signedUrl = await getSignedUrl(
+          s3Client,
+          new GetObjectCommand(bucketParams),
+          { expiresIn: 5 * 60 }
+        );
+        res.status(200).json({ url: signedUrl });
+      } else {
+        // returns entry 
+        res.status(200).json(entryExists)
+      }
     } else {
       if (!entryExists) {
         res.status(404).json({ error: "Not found" });

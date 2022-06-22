@@ -36,18 +36,13 @@ export async function listEntries(skip = 0, take = 9): Promise<Entry[]> {
 }
 
 export async function getFileSignedUrl(id: string): Promise<string> {
-  const res = await instance.get(`/entries/${id}`);
+  const res = await instance.get(`/entries/${id}?url=true`);
   return res.data.url;
-  // try {
-  //   const res = await instance.get(`/entries/${id}`);
-  //   return res.data.url;
-  // } catch (err) {
-  //   if (axios.isAxiosError(err) && err.response) {
-  //     return { error: err.response.statusText };
-  //   } else {
-  //     return { error: "Server Error" };
-  //   }
-  // }
+}
+
+export async function getEntry(id: string): Promise<Entry> {
+  const res = await instance.get(`/entries/${id}`);
+  return res.data;
 }
 
 export async function postEntry(form: any): Promise<PostResponse> {
