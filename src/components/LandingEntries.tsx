@@ -78,7 +78,7 @@ const LandingEntries: React.FC = () => {
                 <div className={styles["bottom-row"]}>
                   <ul className={styles.tags}>
                     {entry.tags.map((t, n: number) => {
-                      return <li key={n}> {t.name}</li>;
+                      return <li key={n}> <a href={`entries/tag/${t.name}`}> {t.name} </a>  </li>;
                     })}
                   </ul>
                   <div className={styles.buttons}>

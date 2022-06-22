@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { UploadApiResponse } from "cloudinary";
 import multer from "multer";
-import {__prod__} from "~/lib/constants";
+import { __prod__ } from "~/lib/constants";
 // import streamifier from "stream/promises"
 import path from "path";
 import nextConnect from "next-connect";
@@ -25,8 +25,8 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    __prod__ ? null : console.log(err); 
-    __prod__ ? null : console.log(req); 
+    __prod__ ? null : console.log(err);
+    __prod__ ? null : console.log(req);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -43,19 +43,20 @@ handler.use(uploadMiddleware);
 // LIST ENTRIES FOR A GIVEN USER
 handler.get(async (req, res) => {
   const session = await getSession({ req });
-
-  const skip = Number(req.query.skip) || 0;
-  const take = Number(req.query.take) || 10;
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const userExists = await prisma.user.findUnique({
+    where: { email: session!.user?.email as string },
+  });
+  if (!userExists) {
+    res.status(401).json({ error: "Unauthorized" });
+    res.end();
   } else {
-    const userExists = await prisma.user.findUnique({
-      where: { email: session!.user?.email as string },
-    });
-    if (!userExists) {
-      res.status(401).json({ error: "Unauthorized" });
-      res.end();
-    } else {
+    if (req.query.skip && req.query.take) {
+      const skip = Number(req.query.skip) || 0;
+      const take = Number(req.query.take) || 10;
       const entries = await prisma.entry.findMany({
         skip: skip as number,
         take: take as number,
@@ -63,8 +64,14 @@ handler.get(async (req, res) => {
         orderBy: [{ createdAt: "desc" }],
         include: { tags: true },
       });
-      // const entries = await prisma.entry.groupBy({by: ['tags']})
       res.status(200).json(entries);
+    } else if (req.query.tag) {
+      const entries = await prisma.entry.findMany({
+        where: { tags: { some: { name: req.query.tag as string } } },
+      });
+      res.status(200).json(entries);
+    } else {
+      res.end();
     }
   }
   res.end();

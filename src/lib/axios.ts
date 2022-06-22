@@ -21,18 +21,11 @@ export const instance = axios.create({ baseURL: $api_url });
 export async function listEntries(skip = 0, take = 9): Promise<Entry[]> {
   const res = await instance.get(`/entries?skip=${skip}&take=${take}`);
   return res.data;
-  // try {
-  //   const res = await instance.get(`/entries?skip=${skip}&take=${take}`);
-  //   return res.data;
-  // } catch (err) {
-  //   if (axios.isAxiosError(err)) {
-  //     if (err && err.response) {
-  //       return { error: err.response.statusText };
-  //     } else {
-  //       return { error: "Server Error" };
-  //     }
-  //   }
-  // }
+}
+
+export async function queryEntriesByTag(tag: string): Promise<Entry[]> {
+  const res = await instance.get(`/entries?tag=${tag}`);
+  return res.data;
 }
 
 export async function getFileSignedUrl(id: string): Promise<string> {
