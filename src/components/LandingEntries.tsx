@@ -12,30 +12,19 @@ import type {FormattedEntry} from "~/types";
 import styles from "~/styles/LandingEntries.module.css";
 
 
-const formatTags = (arr: any[]) => {
-  try {
-    return arr.map((e) => {
-      e["tags"] = e["tags"].split(",");
-      return e;
-    });
-  } catch (err) {
-    return;
-  }
-};
-
 const filterByK = (arr: FormattedEntry[], k: string) => {
   if (k === "all") {
     return arr;
   } else {
-    return arr.filter((e) => e.tags.includes(k));
+    return arr.filter((e) => e.tags.map(t => t.name).includes(k));
   }
 };
-
+//
 const getSetOfTags = (arr: FormattedEntry[]) => {
   let set = new Set<string>();
   for (let i = 0; i < arr.length; i++) {
     for (let k in arr[i]!.tags) {
-      set.add(arr[i]!.tags[k] as string);
+      set.add(arr[i]!.tags[k].name as string);
     }
   }
   //@ts-ignore Weird NextJS magic. Even tho es5 specified, iteration of set is possible
@@ -53,7 +42,7 @@ const LandingEntries: React.FC = () => {
     () => {
       return listEntries();
     },
-    { refetchOnWindowFocus: false, select: formatTags }
+    { refetchOnWindowFocus: false, }
   );
   const deleteMutation = useMutation((id: string) => deleteEntry(id), {
     onSuccess: () => queryClient.invalidateQueries("landingEntries"),
@@ -80,6 +69,7 @@ const LandingEntries: React.FC = () => {
         <ContainerFlex>
           {data.length > 0 ? (
             filterByK(data, selectedTag).map((entry: FormattedEntry) => (
+            // data.map((entry: any) => (
               <Box key={entry.id}>
                 <p>
                   {entry.text.slice(0, 100)}
@@ -88,7 +78,7 @@ const LandingEntries: React.FC = () => {
                 <div className={styles["bottom-row"]}>
                   <ul className={styles.tags}>
                     {entry.tags.map((t: string, n: number) => {
-                      return <li key={n}> {t}</li>;
+                      return <li key={n}> {t.name}</li>;
                     })}
                   </ul>
                   <div className={styles.buttons}>

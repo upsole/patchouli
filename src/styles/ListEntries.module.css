@@ -1,40 +1,40 @@
-.stripes {
-  margin-top: 1em;
-
-  border-radius: 3px;
-
-  padding: 1em;
-
-
-  /* box-shadow: inset 0px 0px 15px var(--shadow-color) */
-}
-.stripes > div {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-}
-
-.stripes > div > div {
-  display: flex;
-  justify-content: space-evenly;
-
-  border: 1px white solid;
-
-  width: 50%;
-}
-
+/* .stripes { */
+/*   margin-top: 1em; */
+/**/
+/*   border-radius: 3px; */
+/**/
+/*   padding: 1em; */
+/**/
+/**/
+/*   box-shadow: inset 0px 0px 15px var(--shadow-color) */
+/* } */
+/* .stripes > div { */
+/*   display: flex; */
+/**/
+/*   justify-content: space-between; */
+/*   align-items: center; */
+/* } */
+/**/
+/* .stripes > div > div { */
+/*   display: flex; */
+/*   justify-content: space-evenly; */
+/**/
+/*   border: 1px white solid; */
+/**/
+/*   width: 50%; */
+/* } */
+/**/
 /* .stripes > div > * { */
 /*   flex: 0 1 auto; */
 /* } */
-
-.stripes > div:nth-child(odd) {
-  background-color: var(--bkg-color-0);
-}
-
-.stripes > div:nth-child(even) {
-background-color: var(--bkg-color-2);
-}
+/**/
+/* .stripes > div:nth-child(odd) { */
+/*   background-color: var(--bkg-color-0); */
+/* } */
+/**/
+/* .stripes > div:nth-child(even) { */
+/* background-color: var(--bkg-color-2); */
+/* } */
 
 .header {
   display: flex;
@@ -67,6 +67,7 @@ background-color: var(--bkg-color-2);
   padding: 1em;
 
   margin: auto;
+
 }
 
 .table td {

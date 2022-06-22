@@ -27,7 +27,7 @@ const ListEntries: React.FC = () => {
     }
   );
   const memoFuse = useMemo(() => {
-    const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
+    const fuse = new Fuse(data as Entry[], { keys: ["title", "tags.name"] });
     return fuse;
   }, [data]);
   // const fuse = new Fuse(data as Entry[], { keys: ["text", "tags"] });
@@ -42,9 +42,8 @@ const ListEntries: React.FC = () => {
 
   if (isLoading) return <h3>Loading...</h3>;
   if (entries && status === "authenticated") {
-    console.log(entries);
     return (
-      <Box stripes>
+      <Box>
         {/* <button onClick={() => setSkip(skip + 1)}> + </button> */}
         <div className={styles.header}>
           <input
@@ -64,8 +63,8 @@ const ListEntries: React.FC = () => {
               <td>{d.title}</td>
               <td>
                 <div>
-                  {d.tags.split(",").map((t, k: number) => {
-                    return <p key={k}>d{t}</p>;
+                  {d.tags.map((t, k: number) => {
+                    return <p key={k}>{t.name}</p>;
                   })}
                 </div>
               </td>

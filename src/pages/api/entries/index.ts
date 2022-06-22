@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { UploadApiResponse } from "cloudinary";
 import multer from "multer";
+import {__prod__} from "~/lib/constants";
 // import streamifier from "stream/promises"
 import path from "path";
 import nextConnect from "next-connect";
@@ -24,7 +25,7 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    console.log(err);
+    __prod__ ? null : console.log(err);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -90,16 +91,17 @@ handler.post(async (req, res) => {
           (i) => i
         )) as UploadApiResponse)
         : undefined;
+
+      const formattedTags = req.body.tags.split(",").map((t: string) => {
+        return { where: { name: t }, create: { name: t } };
+      });
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
           title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
-          //TODO format tags to proper in Form
           tags: {
-            create: req.body.tags.split(",").map((t: string) => {
-              return { name: t };
-            }),
+            connectOrCreate: formattedTags,
           },
           text: req.body.text,
           file_key: bucketParams.Key,
@@ -118,15 +120,16 @@ handler.post(async (req, res) => {
           (i) => i
         )) as UploadApiResponse)
         : undefined;
+      const formattedTags = req.body.tags.split(",").map((t: string) => {
+        return { where: { name: t }, create: { name: t } };
+      });
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
           title: req.body.title,
           user: { connect: { email: session.user!.email as string } },
           tags: {
-            create: req.body.tags.split(",").map((t: string) => {
-              return { name: t };
-            }),
+            connectOrCreate: formattedTags,
           },
           text: req.body.text,
           img_url: cloudResponse?.secure_url

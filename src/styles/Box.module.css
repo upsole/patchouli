@@ -6,9 +6,8 @@
 
   padding: 1em;
 
+  /* TODO THIS MIGHT BREAK BUT SO FAR FLEXBOX CONTAINER OVERRIDES IT FOR LANDING */
+  width: 90%;
+
   position: relative;
 }
-
-/* .stripes h5 { */
-/*   background-color: var(--bkg-color-2); */
-/* } */
