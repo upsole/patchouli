@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { postEntry } from "../lib/axios";
 import * as Yup from "yup";
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { __prod__ } from "~/lib/constants";
 
 import styles from "~/styles/Form.module.css";
@@ -45,7 +45,7 @@ const EntryForm: React.FC = () => {
   return (
     <Formik
       initialValues={{ title: "", text: "", tags: "" }}
-      // validationSchema={entrySchema}
+      validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
         values.tags = values.tags
           .replaceAll(/ +/g, ",")

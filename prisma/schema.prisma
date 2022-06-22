@@ -65,6 +65,7 @@ model VerificationToken {
 model Entry {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   title   String
   text    String
@@ -86,6 +87,7 @@ model Tag {
   entries Entry[]
   color   TagColor @default(Purple)
 
+  @@map("tag")
 }
 
 enum TagColor {

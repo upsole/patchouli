@@ -7,12 +7,12 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-import type {FormattedEntry} from "~/types";
+import type {Entry} from "~/types";
 
 import styles from "~/styles/LandingEntries.module.css";
 
 
-const filterByK = (arr: FormattedEntry[], k: string) => {
+const filterByK = (arr: Entry[], k: string) => {
   if (k === "all") {
     return arr;
   } else {
@@ -20,11 +20,11 @@ const filterByK = (arr: FormattedEntry[], k: string) => {
   }
 };
 //
-const getSetOfTags = (arr: FormattedEntry[]) => {
+const getSetOfTags = (arr: Entry[]) => {
   let set = new Set<string>();
   for (let i = 0; i < arr.length; i++) {
     for (let k in arr[i]!.tags) {
-      set.add(arr[i]!.tags[k].name as string);
+      set.add(arr[i]!.tags[k]!.name as string);
     }
   }
   //@ts-ignore Weird NextJS magic. Even tho es5 specified, iteration of set is possible
@@ -68,7 +68,7 @@ const LandingEntries: React.FC = () => {
         </div>
         <ContainerFlex>
           {data.length > 0 ? (
-            filterByK(data, selectedTag).map((entry: FormattedEntry) => (
+            filterByK(data, selectedTag).map((entry: Entry) => (
             // data.map((entry: any) => (
               <Box key={entry.id}>
                 <p>
@@ -77,7 +77,7 @@ const LandingEntries: React.FC = () => {
                 </p>
                 <div className={styles["bottom-row"]}>
                   <ul className={styles.tags}>
-                    {entry.tags.map((t: string, n: number) => {
+                    {entry.tags.map((t, n: number) => {
                       return <li key={n}> {t.name}</li>;
                     })}
                   </ul>

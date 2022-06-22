@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import {__prod__} from "~/lib/constants";
 import { GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import nextConnect from "next-connect";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -15,6 +16,8 @@ interface NextRequest extends NextApiRequest {
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
+    __prod__ ? null : console.log(err); 
+    __prod__ ? null : console.log(req); 
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {

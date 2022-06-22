@@ -10,7 +10,7 @@ import type { Entry } from "~/types";
 import styles from "~/styles/ListEntries.module.css";
 
 const ListEntries: React.FC = () => {
-  const [skip, setSkip] = useState(0);
+  const [skip, _] = useState(0);
   const [fuzzyQuery, setFuzzyQuery] = useState("");
   const [entries, setEntries] = useState<Entry[]>([]);
   const { status } = useSession();

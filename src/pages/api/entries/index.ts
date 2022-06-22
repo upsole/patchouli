@@ -25,7 +25,8 @@ const upload = multer({
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
-    __prod__ ? null : console.log(err);
+    __prod__ ? null : console.log(err); 
+    __prod__ ? null : console.log(req); 
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -85,7 +86,7 @@ handler.post(async (req, res) => {
         Key: id + extension,
         Body: req.files.document[0].buffer,
       };
-      const s3Res = await s3Client.send(new PutObjectCommand(bucketParams));
+      await s3Client.send(new PutObjectCommand(bucketParams));
       const cloudResponse = req.files.image
         ? ((await uploadImageStream(req.files.image[0].buffer).then(
           (i) => i
