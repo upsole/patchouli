@@ -11,6 +11,12 @@ html {
   --warning-color-1: hsl(0, 43%, 62%);
   --warning-color-2: hsl(0, 50%, 50%);
   --warning-color-3: hsl(0, 68%, 52%);
+  --theme-purple: hsla(263, 45%, 56%, 1);
+  --theme-pink: hsla(318, 60%, 60%, 1);
+  --theme-pink-light: hsla(346, 100%, 72%, 1);
+  --theme-orange: hsla(39, 100%, 69%, 1);
+  --theme-yellow: hsla(60, 92%, 71%, 1);
+
   color-scheme: light;
 }
 html.dark {
@@ -104,9 +110,12 @@ li {
 */
 main {
   padding: 1em;
-  display: flex;
-
+  /* display: flex; */
+  /**/
   position: relative;
+
+  width: 75vw;
+  margin: auto;
 }
 
 main > div {
@@ -122,37 +131,7 @@ main button {
   border-radius: 7px;
 }
 
-/*
-===================================
-      FORM
-===================================
-*/
-/* form { */
-/*   margin: auto; */
-/**/
-/*   width: 25vw; */
-/*   padding: 1em; */
-/**/
-/*   display: flex; */
-/*   flex-direction: column; */
-/* } */
-/**/
-/* form textarea { */
-/*   padding: 5px; */
-/* } */
-/**/
-/* form span { */
-/*   color: var(--warning-color); */
-/*   font-size: 0.9rem; */
-/*   margin: 1em; */
-/* } */
-/**/
-/* form input, */
-/* label { */
-/*   width: 75%; */
-/*   margin: auto; */
-/* } */
-/**/
-/* form > * { */
-/*   margin-top: 1em; */
-/* } */
+input {
+  background-color: var(--bkg-color-2);
+}
+

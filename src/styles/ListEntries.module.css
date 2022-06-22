@@ -1,13 +1,91 @@
 .stripes {
   margin-top: 1em;
+
+  border-radius: 3px;
+
+  padding: 1em;
+
+
+  /* box-shadow: inset 0px 0px 15px var(--shadow-color) */
 }
 .stripes > div {
   display: flex;
 
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+}
+
+.stripes > div > div {
+  display: flex;
+  justify-content: space-evenly;
+
+  border: 1px white solid;
+
+  width: 50%;
+}
+
+/* .stripes > div > * { */
+/*   flex: 0 1 auto; */
+/* } */
+
+.stripes > div:nth-child(odd) {
+  background-color: var(--bkg-color-0);
 }
 
 .stripes > div:nth-child(even) {
 background-color: var(--bkg-color-2);
+}
+
+.header {
+  display: flex;
+  justify-content: space;
+  width: 100%;
+}
+
+.header > * {
+  margin-left: .5em;
+  margin-right: .5e;
+}
+
+.header > input {
+  height: 2.5em;
+  width: 10em;
+
+  flex: 2 0 auto;
+  border-radius: 10px;
+  border: transparent;
+
+  padding: 1em;
+}
+
+.header > button {
+  flex: 0 1 auto;
+}
+
+.table {
+  width: 100%;
+  padding: 1em;
+
+  margin: auto;
+}
+
+.table td {
+  padding: .25em;
+  text-align: center;
+}
+
+.table > tr > td > div {
+  display: flex;
+
+  justify-content: space-evenly;
+}
+
+.table > tr:nth-child(odd) {
+background-color: var(--bkg-color-0);
+
+}
+
+.table > tr:nth-child(even) {
+background-color: var(--bkg-color-2);
+
 }

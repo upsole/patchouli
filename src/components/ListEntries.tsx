@@ -42,27 +42,58 @@ const ListEntries: React.FC = () => {
 
   if (isLoading) return <h3>Loading...</h3>;
   if (entries && status === "authenticated") {
+    console.log(entries);
     return (
       <Box stripes>
-        <button onClick={() => setSkip(skip + 1)}> + </button>
-        <input
-          type="text"
-          value={fuzzyQuery}
-          onChange={(e) => {
-            e.preventDefault();
-            setFuzzyQuery(e.target.value);
-          }}
-        />
-        <div className={styles.stripes}>
-          {entries.map((d) => (
-            <div key={d.id}>
-              <h5>{d.text}</h5>
-              {d.tags.split(",").map((t, k: number) => {
-                return <p key={k}>{t}</p>;
-              })}
-            </div>
-          ))}
+        {/* <button onClick={() => setSkip(skip + 1)}> + </button> */}
+        <div className={styles.header}>
+          <input
+            type="text"
+            value={fuzzyQuery}
+            placeholder="Search..."
+            onChange={(e) => {
+              e.preventDefault();
+              setFuzzyQuery(e.target.value);
+            }}
+          />
+          <button> TAGS </button>
         </div>
+        <table className={styles.table}>
+          {entries.map((d) => (
+            <tr key={d.id}>
+              <td>{d.title}</td>
+              <td>
+                <div>
+                  {d.tags.split(",").map((t, k: number) => {
+                    return <p key={k}>d{t}</p>;
+                  })}
+                </div>
+              </td>
+              <td>
+                <a href={`entries/${d.id}`}> Details </a>
+              </td>
+                <td>
+                {new Date(d.createdAt!).toLocaleString("en-IN", {month: "long", year: "numeric", day: "numeric"})}
+              </td>
+            </tr>
+          ))}
+          <tr>
+          </tr>
+        </table>
+        {/* <div className={styles.stripes}> */}
+        {/*   {entries.map((d) => ( */}
+        {/*     <div key={d.id}> */}
+        {/*       <p>{d.title}</p> */}
+        {/*       <div> */}
+        {/*         {d.tags.split(",").map((t, k: number) => { */}
+        {/*           return <p key={k}>{t}</p>; */}
+        {/*         })} */}
+        {/*       </div> */}
+        {/*       <a href={`entries/${d.id}`}> Detail </a> */}
+        {/*       <p> {d.createdAt?.toLocaleLowerCase()}</p> */}
+        {/*     </div> */}
+        {/*   ))} */}
+        {/* </div> */}
       </Box>
     );
   } else if (!entries) {
