@@ -4,6 +4,10 @@ import { useMutation, useQueryClient } from "react-query";
 import { postEntry } from "../lib/axios";
 import * as Yup from "yup";
 import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { __prod__ } from "~/lib/constants";
+
+import styles from "~/styles/Form.module.css";
 
 const entrySchema = Yup.object({
   title: Yup.string().required("Required"),
@@ -21,6 +25,7 @@ const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+  const [mutationError, setMutationError] = useState<string>();
   const postMutation = useMutation((newEntry: Values) => postEntry(newEntry), {
     onMutate: () => {
       setUploading(true);
@@ -28,6 +33,13 @@ const EntryForm: React.FC = () => {
     onSuccess: () => {
       setUploading(false);
       queryClient.invalidateQueries("landingEntries");
+    },
+    onError: (err) => {
+      if (axios.isAxiosError(err)) {
+        __prod__ ? null : console.error(err);
+        //@ts-ignore
+        setMutationError(err.response?.data.error);
+      }
     },
   });
   return (
@@ -46,12 +58,16 @@ const EntryForm: React.FC = () => {
       }}
     >
       {({ setFieldValue, values, handleChange, errors }) => (
-        <Form>
-          <> 
+        <Form className={styles.form}>
+          <>
             <label> Title {errors.title && <span>{errors.title}</span>} </label>
-            <input type="text" name="title" value={values.title} onChange={handleChange} />
-
-            </>
+            <input
+              type="text"
+              name="title"
+              value={values.title}
+              onChange={handleChange}
+            />
+          </>
           <>
             <label> Text {errors.text && <span>{errors.text}</span>} </label>
             <textarea
@@ -95,9 +111,8 @@ const EntryForm: React.FC = () => {
               }}
             />
           </>
-          <button type="submit">
-            {uploading ? "Uploading..." : "Submit"}
-          </button>
+          <button type="submit">{uploading ? "Uploading..." : "Submit"}</button>
+          {mutationError && <div className={styles.error}>{mutationError}</div>}
         </Form>
       )}
     </Formik>

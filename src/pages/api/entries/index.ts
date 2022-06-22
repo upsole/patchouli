@@ -41,8 +41,8 @@ handler.use(uploadMiddleware);
 handler.get(async (req, res) => {
   const session = await getSession({ req });
 
-  const skip = Number(req.query.skip) || 0
-  const take = Number(req.query.take) || 10
+  const skip = Number(req.query.skip) || 0;
+  const take = Number(req.query.take) || 10;
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else {
@@ -57,10 +57,10 @@ handler.get(async (req, res) => {
         skip: skip as number,
         take: take as number,
         where: { userId: userExists.id },
-        orderBy: [{createdAt: 'desc'}]
+        orderBy: [{ createdAt: "desc" }],
       });
       // const entries = await prisma.entry.groupBy({by: ['tags']})
-      res.status(200).json(entries)
+      res.status(200).json(entries);
     }
   }
   res.end();
@@ -71,6 +71,8 @@ handler.post(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
+  } else if (!req.body.title || !req.body.text || !req.body.tags) {
+    res.status(400).json({ error: "Missing Fields" });
   } else {
     const id = v4();
     if (req.files.document) {
@@ -81,22 +83,11 @@ handler.post(async (req, res) => {
         Body: req.files.document[0].buffer,
       };
       const s3Res = await s3Client.send(new PutObjectCommand(bucketParams));
-      const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
-      const newEntry = await prisma.entry.create({
-        data: {
-          id: id,
-          title: req.body.title,
-          user: { connect: { email: session.user!.email as string } },
-          tags: req.body.tags ? req.body.tags : undefined,
-          text: req.body.text,
-          file_key: bucketParams.Key,
-          img_url: cloudResponse?.secure_url ? cloudResponse.secure_url : undefined,
-          img_id: cloudResponse?.public_id ? cloudResponse.public_id : undefined,
-        },
-      });
-      res.status(200).json({ entry: newEntry });
-    } else {
-      const cloudResponse = req.files.image ? await uploadImageStream(req.files.image[0].buffer).then(i => i) as UploadApiResponse : undefined;
+      const cloudResponse = req.files.image
+        ? ((await uploadImageStream(req.files.image[0].buffer).then(
+          (i) => i
+        )) as UploadApiResponse)
+        : undefined;
       const newEntry = await prisma.entry.create({
         data: {
           id: id,
@@ -104,8 +95,35 @@ handler.post(async (req, res) => {
           user: { connect: { email: session.user!.email as string } },
           tags: req.body.tags,
           text: req.body.text,
-          img_url: cloudResponse?.secure_url ? cloudResponse.secure_url : undefined,
-          img_id: cloudResponse?.public_id ? cloudResponse.public_id : undefined,
+          file_key: bucketParams.Key,
+          img_url: cloudResponse?.secure_url
+            ? cloudResponse.secure_url
+            : undefined,
+          img_id: cloudResponse?.public_id
+            ? cloudResponse.public_id
+            : undefined,
+        },
+      });
+      res.status(200).json({ entry: newEntry });
+    } else {
+      const cloudResponse = req.files.image
+        ? ((await uploadImageStream(req.files.image[0].buffer).then(
+          (i) => i
+        )) as UploadApiResponse)
+        : undefined;
+      const newEntry = await prisma.entry.create({
+        data: {
+          id: id,
+          title: req.body.title,
+          user: { connect: { email: session.user!.email as string } },
+          tags: req.body.tags,
+          text: req.body.text,
+          img_url: cloudResponse?.secure_url
+            ? cloudResponse.secure_url
+            : undefined,
+          img_id: cloudResponse?.public_id
+            ? cloudResponse.public_id
+            : undefined,
         },
       });
       res.status(200).json({ entry: newEntry });

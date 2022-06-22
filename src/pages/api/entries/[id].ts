@@ -22,7 +22,7 @@ const handler = nextConnect<NextRequest, NextApiResponse>({
   },
 });
 
-// TODO Separate logic for signed url & detail get
+// TODO Separate logic for signed url & detail get // MAYBE use boolean param
 // GENERATES SIGNED URL AND RETURNS ENTRY DETAILS
 handler.get(async (req, res) => {
   const session = await getSession({ req });
