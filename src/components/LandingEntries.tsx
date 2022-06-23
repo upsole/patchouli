@@ -2,6 +2,7 @@ import { listEntries, deleteEntry } from "../lib/axios";
 import { useState, useEffect } from "react";
 import Box from "./Box";
 import ContainerFlex from "./ContainerFlex";
+import {HiTrash, HiExternalLink} from "react-icons/hi";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
@@ -69,12 +70,18 @@ const LandingEntries: React.FC = () => {
         <ContainerFlex>
           {data.length > 0 ? (
             filterByK(data, selectedTag).map((entry: Entry) => (
-            // data.map((entry: any) => (
               <Box key={entry.id}>
-                <p>
-                  {entry.text.slice(0, 100)}
-                  {entry.text.length > 100 ? "..." : ""}
-                </p>
+                <div className={styles.body}>
+                  <div>
+                    <h5>{entry.title}</h5>
+                    <p>
+                      {entry.text.slice(0, 75)}
+                      {entry.text.length > 75 ? "..." : ""}
+                      <a href={`/entries/${entry.id}`}> Read more</a>
+                    </p>
+                  </div>
+                    <img src={entry.img_url ? entry.img_url : "/placeholder_cat.jpg"} alt={entry.title} />
+                </div>
                 <div className={styles["bottom-row"]}>
                   <ul className={styles.tags}>
                     {entry.tags.map((t, n: number) => {
@@ -88,13 +95,13 @@ const LandingEntries: React.FC = () => {
                           router.push(await getFileSignedUrl(entry.id));
                         }}
                       >
-                        Download Document
+                        <HiExternalLink /> Document
                       </button>
                     )}
                     <button
                       onClick={() => deleteMutation.mutateAsync(entry.id)}
                     >
-                      Delete
+                      <HiTrash />
                     </button>
                   </div>
                 </div>
