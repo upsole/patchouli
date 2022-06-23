@@ -1,0 +1,55 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btns {
+  display: flex;
+}
+
+
+.meta {
+  display: flex;
+  justify-content: space-evenly;
+
+  margin-top: .5em;
+  margin-bottom: 1em;
+
+  border-bottom: var(--bkg-color-2) solid 1px;
+}
+
+.meta > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.body {
+  display: flex;
+}
+
+.body > * {
+  margin-left: 1em;
+}
+
+.body p {
+  overflow-y: scroll;
+}
+
+.body img {
+  height: 500px;
+  max-width: 600px;
+}
+
+
+.body > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bkg-color-2);
+
+  width: 100%;
+  padding: 1em;
+
+  border-radius: 7px;
+}
+

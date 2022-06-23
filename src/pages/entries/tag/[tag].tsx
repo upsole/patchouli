@@ -1,8 +1,33 @@
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import { queryEntriesByTag } from "~/lib/axios";
 import type { NextPage } from "next";
-import FilteredComponent from "~/components/FilteredByTag";
+import ListEntries from "~/components/ListEntries";
 
-const Filterted: NextPage = () => {
-  return <FilteredComponent />
-}
+const FilteredByTagPage: NextPage = () => {
+  const router = useRouter();
+  const { tag } = router.query;
+  const { data, isLoading } = useQuery(
+    ["listEntriesByTag", tag],
+    () => {
+      if (tag) {
+        return queryEntriesByTag(tag as string);
+      }
+    },
+    { refetchOnWindowFocus: false }
+  );
 
-export default Filterted;
+  if (isLoading) {
+    <h3>Loading...</h3>;
+  } else if (data) {
+    return (
+      <>
+        <h3>Entries tagged as {tag}</h3>
+        <ListEntries data={data} />
+      </>
+    );
+  }
+  return <h3>Empty</h3>;
+};
+
+export default FilteredByTagPage;

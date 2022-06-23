@@ -61,13 +61,18 @@ handler.get(async (req, res) => {
         skip: skip as number,
         take: take as number,
         where: { userId: userExists.id },
-        orderBy: [{ createdAt: "desc" }],
+        orderBy: [{ updatedAt: "desc" }],
         include: { tags: true },
       });
       res.status(200).json(entries);
     } else if (req.query.tag) {
       const entries = await prisma.entry.findMany({
-        where: { tags: { some: { name: req.query.tag as string } } },
+        where: {
+          tags: { some: { name: req.query.tag as string } },
+          userId: userExists.id,
+        },
+        orderBy: [{ updatedAt: "desc" }],
+        include: {tags: true}
       });
       res.status(200).json(entries);
     } else {

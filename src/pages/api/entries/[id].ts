@@ -36,7 +36,7 @@ handler.get(async (req, res) => {
   } else {
     const { id } = req.query;
     const entryExists = await prisma.entry.findUnique({
-      where: { id: id as string },
+      where: { id: id as string }, include: {tags: true}
     });
     const userExists = await prisma.user.findUnique({
       where: { email: session.user?.email as string },
