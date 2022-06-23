@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Box from "./Box";
 import ContainerFlex from "./ContainerFlex";
 import {HiTrash, HiExternalLink} from "react-icons/hi";
+import {FaTrash, FaExternalLinkAlt} from "react-icons/fa";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
@@ -95,13 +96,14 @@ const LandingEntries: React.FC = () => {
                           router.push(await getFileSignedUrl(entry.id));
                         }}
                       >
-                        <HiExternalLink /> Document
+                        {/* <HiExternalLink /> */} <FaExternalLinkAlt /> Document
                       </button>
                     )}
                     <button
                       onClick={() => deleteMutation.mutateAsync(entry.id)}
                     >
-                      <HiTrash />
+                      <FaTrash />
+                      {/* <HiTrash /> */}
                     </button>
                   </div>
                 </div>

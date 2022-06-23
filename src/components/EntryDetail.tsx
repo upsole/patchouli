@@ -1,18 +1,31 @@
 import type { Entry } from "~/types";
 import styles from "~/styles/EntryDetail.module.css";
+import { deleteEntry } from "~/lib/axios";
+import {FaTrash} from "react-icons/fa";
+import { useMutation, useQueryClient } from "react-query";
 import { useRouter } from "next/router";
 import { getFileSignedUrl } from "~/lib/axios";
 import Box from "./Box";
 const EntryDetailCard: React.FC<{ data: Entry }> = ({ data }) => {
-  console.log(data);
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation((id: string) => deleteEntry(id), {
+    onSuccess: () => queryClient.invalidateQueries("landingEntries"),
+  });
   const router = useRouter();
   return (
     <Box>
       <div className={styles.header}>
         <h3>{data.title}</h3>
         <div className={styles.btns}>
-          <button>DEL</button>
-          <button>EDIT</button>
+          <button
+            onClick={() => {
+              deleteMutation.mutateAsync(data.id);
+              router.push("/");
+            }}
+          >
+            <FaTrash />
+          </button>
+          <button onClick={() => alert("Coming Soon")}>EDIT</button>
         </div>
       </div>
       <div className={styles.meta}>
@@ -30,10 +43,7 @@ const EntryDetailCard: React.FC<{ data: Entry }> = ({ data }) => {
         </p>
       </div>
       <div className={styles.body}>
-        <img
-          src={data.img_url || "/placeholder_cat.jpg"}
-          alt={data.title}
-        />
+        <img src={data.img_url || "/placeholder_cat.jpg"} alt={data.title} />
         <div>
           <p>{data.text}</p>
           {data.file_key ? (

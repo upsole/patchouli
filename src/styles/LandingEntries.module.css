@@ -20,7 +20,7 @@
 .body a {
   text-decoration-line: underline;
   font-size: .75rem;
-  color: var(--theme-purple);
+  color: var(--theme-pink);
 }
 
 .bottom-row {

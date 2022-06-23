@@ -50,3 +50,36 @@
   text-decoration-line: underline;
   transform: none;
 }
+
+.right_btns {
+  display: flex;
+}
+
+.right_btns > button {
+  border: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logo > svg {
+fill: var(--theme-pink);
+}
+
+.logo :hover{
+  color: white;
+  fill: var(--theme-purple);
+}
+
+.logo_wrap:hover{
+  text-decoration-line: none;
+}
+
+
+/* .logo > *:hover { */
+/*   fill: var(--theme-purple); */
+/* } */
+
