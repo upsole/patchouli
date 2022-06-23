@@ -42,7 +42,7 @@
 .tags > li {
   border: 1px solid var(--text-color);
 
-  font-size: .5rem;
+  font-size: .65rem;
 
   margin-left: 5px;
   padding: 5px;
@@ -68,14 +68,22 @@
   display: flex;
   justify-content: space-around;
   max-width: 40%;
-  background-color: var(--bkg-color-2);
+  /* background-color: var(--bkg-color-2); */
+
+  
 
   padding: .25em;
 }
 
 .selector-tags > * {
   margin-left: .5em;
+  font-weight: 550;
+  font-size: .75rem;
+
+  border-radius: 15em;
+  box-shadow: 2px 2px 2px var(--shadow-color);
 }
+
 
 .selector-tags > *:nth-child(even) {
   background-color: var(--theme-pink);
@@ -83,6 +91,10 @@
 
 .selector-tags > *:nth-child(odd) {
   background-color: var(--theme-orange);
+}
+
+.selector-tags > *:nth-child(1) {
+  background-color: var(--text-color);
 }
 
 .selector-tags button {

@@ -36,6 +36,8 @@
   padding: .5em;
   border: 1px var(--text-color) solid;
   border-radius: 7px;
+
+  font-weight: 700;
 }
 
 .nav-btns button:hover {
@@ -44,6 +46,10 @@
   border-color: var(--text-color);
   box-shadow: 0 0 2px rgba(255,255,255, 0.75);
 
+}
+
+.sign-btn {
+  font-weight: 600;
 }
 
 .sign-btn:hover {
@@ -59,6 +65,10 @@
   border: none;
 }
 
+.right_btns span {
+  color: var(--theme-pink);
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -70,8 +80,8 @@ fill: var(--theme-pink);
 }
 
 .logo :hover{
-  color: white;
-  fill: var(--theme-purple);
+  color: var(--text-color);
+  fill: var(--theme-orange);
 }
 
 .logo_wrap:hover{

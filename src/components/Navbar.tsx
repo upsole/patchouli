@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
         </NextLink>
 
         <NextLink href="/entries" passHref>
-          <button> View All </button>
+          <button> All Entries </button>
         </NextLink>
       </div>
 
