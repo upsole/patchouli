@@ -5,8 +5,8 @@
 }
 
 .header > * {
-  margin-left: .5em;
-  margin-right: .5e;
+  margin-left: 0.5em;
+  margin-right: 0.5e;
 }
 
 .header > input {
@@ -29,26 +29,38 @@
   padding: 1em;
 
   margin: auto;
-
 }
 
 .table td {
-  padding: .25em;
+  padding: .2em;
   text-align: center;
 }
 
 .table > tbody > tr > td > div {
   display: flex;
+  font-size: 0.85rem;
+  font-weight: 900;
 
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .table > tbody > tr:nth-child(odd) {
-background-color: var(--bkg-color-0);
+  background-color: var(--bkg-color-0);
+}
 
+.table > tbody > tr:nth-child(odd) > td > div > p {
+  background-color: var(--bkg-color-2);
+  padding: 0.4em;
+  border-radius: 10px;
 }
 
 .table > tbody > tr:nth-child(even) {
-background-color: var(--bkg-color-2);
+  background-color: var(--bkg-color-2);
+}
 
+.table > tbody > tr:nth-child(even) > td > div > p {
+  background-color: var(--bkg-color-0);
+  padding: 0.4em;
+  border-radius: 10px;
 }
