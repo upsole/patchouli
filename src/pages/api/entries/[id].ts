@@ -25,8 +25,8 @@ const handler = nextConnect<NextRequest, NextApiResponse>({
   },
 });
 
-// TODO Separate logic for signed url & detail get // MAYBE use boolean param
-// GENERATES SIGNED URL AND RETURNS ENTRY DETAILS
+// if URL in query params -> generates a signed url for sharing and returns
+// else returns the Entry object
 handler.get(async (req, res) => {
   const session = await getSession({ req });
   const getUrl = req.query.url === "true" ? true : false;
@@ -68,6 +68,7 @@ handler.get(async (req, res) => {
   res.end();
 });
 
+// Deletes record and its associated recourses if present
 handler.delete(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {

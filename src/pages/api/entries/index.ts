@@ -41,6 +41,9 @@ const uploadMiddleware = upload.fields([
 handler.use(uploadMiddleware);
 
 // LIST ENTRIES FOR A GIVEN USER
+// if skip & tae are present, slices the returned array in accordance
+// if tag is present, filters by it and returns the whole array 
+// currently if both skip/take and tag are present, tag is ignored
 handler.get(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
