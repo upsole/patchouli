@@ -57,10 +57,10 @@ const EntryForm: React.FC = () => {
           .then(() => router.push("/"));
       }}
     >
-      {({ setFieldValue, values, handleChange, errors }) => (
+      {({ setFieldValue, values, handleChange, errors, touched }) => (
         <Form className={styles.form}>
           <>
-            <label> Title {errors.title && <span>{errors.title}</span>} </label>
+            <label> Title {errors.title && touched.title && <span>{errors.title}</span>} </label>
             <input
               type="text"
               name="title"
@@ -69,7 +69,7 @@ const EntryForm: React.FC = () => {
             />
           </>
           <>
-            <label> Text {errors.text && <span>{errors.text}</span>} </label>
+            <label> Text {errors.text && touched.text && <span>{errors.text}</span>} </label>
             <textarea
               name="text"
               value={values.text}
@@ -79,10 +79,11 @@ const EntryForm: React.FC = () => {
             />
           </>
           <>
-            <label> Tag {errors.tags && <span>{errors.tags}</span>} </label>
+            <label> Tags {errors.tags && touched.tags && <span>{errors.tags}</span>} </label>
             <input
               type="text"
               name="tags"
+              placeholder="coma or space separated values"
               value={values.tags}
               onChange={handleChange}
             />
@@ -111,7 +112,7 @@ const EntryForm: React.FC = () => {
               }}
             />
           </>
-          <button type="submit">{uploading ? "Uploading..." : "Submit"}</button>
+          <button className={uploading ? styles.submitting : styles.submit} type="submit">{uploading ? "Uploading..." : "Submit"}</button>
           {mutationError && <div className={styles.error}>{mutationError}</div>}
         </Form>
       )}
