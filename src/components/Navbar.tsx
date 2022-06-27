@@ -65,7 +65,10 @@ const Logo = () => {
   );
 };
 
-const ModalBtn = ({ setOpen, open }) => {
+const ModalBtn: React.FC<{
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+}> = ({ setOpen, open }) => {
   return (
     <div className={styles.modal_bars}>
       <FaBars onClick={() => setOpen(!open)} />
@@ -73,7 +76,12 @@ const ModalBtn = ({ setOpen, open }) => {
   );
 };
 
-const ModalItems = ({ dark, setDark, status, data }) => {
+const ModalItems: React.FC<{
+  dark: boolean;
+  setDark: React.Dispatch<React.SetStateAction<boolean>>;
+  status: any;
+  data: any;
+}> = ({ dark, setDark, status, data }) => {
   return (
     <div className={styles.modal_items}>
       <div className={styles.modal_sign}>
@@ -100,13 +108,13 @@ const ModalItems = ({ dark, setDark, status, data }) => {
         </button>
       </div>
       <div className={styles.modal_btns}>
-          <NextLink href="/entries/new" passHref>
-            <button> + New Entry </button>
-          </NextLink>
-          
-          <NextLink href="/entries" passHref>
-            <button> All Entries </button>
-          </NextLink>
+        <NextLink href="/entries/new" passHref>
+          <button> + New Entry </button>
+        </NextLink>
+
+        <NextLink href="/entries" passHref>
+          <button> All Entries </button>
+        </NextLink>
       </div>
     </div>
   );
@@ -161,12 +169,11 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
-        <ModalBtn
-          open={open}
-          setOpen={setOpen}
-        />
+        <ModalBtn open={open} setOpen={setOpen} />
       </nav>
-      {open && <ModalItems dark={dark} setDark={setDark} status={status} data={data} />}
+      {open && (
+        <ModalItems dark={dark} setDark={setDark} status={status} data={data} />
+      )}
     </>
   );
 };

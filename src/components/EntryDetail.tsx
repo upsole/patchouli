@@ -30,8 +30,8 @@ const EntryDetailCard: React.FC<{ data: Entry }> = ({ data }) => {
       </div>
       <div className={styles.meta}>
         <div>
-          {data.tags.map((t) => (
-            <p> {t.name} </p>
+          {data.tags.map((t, k) => (
+            <p key={k}> {t.name} </p>
           ))}
         </div>
         <p>
