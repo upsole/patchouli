@@ -50,3 +50,15 @@
 
   font-weight: 600;
 }
+
+@media (max-width: 641px) {
+  .form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1025px) {
+  .form {
+    width: 65%;
+  }
+}
