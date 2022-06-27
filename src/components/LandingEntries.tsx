@@ -2,7 +2,6 @@ import { listEntries, deleteEntry } from "../lib/axios";
 import { useState, useEffect } from "react";
 import Box from "./Box";
 import ContainerFlex from "./ContainerFlex";
-import {HiTrash, HiExternalLink} from "react-icons/hi";
 import {FaTrash, FaExternalLinkAlt} from "react-icons/fa";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSession } from "next-auth/react";
@@ -44,7 +43,7 @@ const LandingEntries: React.FC = () => {
     () => {
       return listEntries();
     },
-    { refetchOnWindowFocus: false, }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
   const deleteMutation = useMutation((id: string) => deleteEntry(id), {
     onSuccess: () => queryClient.invalidateQueries("landingEntries"),

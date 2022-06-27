@@ -26,7 +26,7 @@ const upload = multer({
 const handler = nextConnect<NextRequest, NextApiResponse>({
   onError(err, req, res) {
     __prod__ ? null : console.log(err);
-    __prod__ ? null : console.log(req);
+    // __prod__ ? null : console.log(req);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -48,6 +48,8 @@ handler.get(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
+    res.end()
+    return
   }
 
   const userExists = await prisma.user.findUnique({
