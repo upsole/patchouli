@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
 import { useDarkMode } from "../lib/darkMode/useDarkMode";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { FaMoon, FaSun, FaBars } from "react-icons/fa";
 import NextLink from "next/link";
 import styles from "~/styles/Navbar.module.css";
 
@@ -64,32 +65,18 @@ const Logo = () => {
   );
 };
 
-const Navbar: React.FC = () => {
-  const { data, status } = useSession();
-  const [dark, setDark] = useDarkMode();
+const ModalBtn = ({ setOpen, open }) => {
   return (
-    <nav className={styles.navbar}>
-      <div>
-        <NextLink href="/" passHref>
-          <button className="{styles.logo_wrap}">
-            <Logo />
-          </button>
-        </NextLink>
-      </div>
-      <div className={styles["nav-btns"]}>
-        <NextLink href="/entries/new" passHref>
-          <button> + New Entry </button>
-        </NextLink>
+    <div className={styles.modal_bars}>
+      <FaBars onClick={() => setOpen(!open)} />
+    </div>
+  );
+};
 
-        <NextLink href="/entries" passHref>
-          <button> All Entries </button>
-        </NextLink>
-      </div>
-
-      <div className={styles.right_btns}>
-        <button onClick={() => setDark(!dark)} className={styles["theme-btn"]}>
-          {dark ? <FaSun /> : <FaMoon />}
-        </button>
+const ModalItems = ({ dark, setDark, status, data }) => {
+  return (
+    <div className={styles.modal_items}>
+      <div className={styles.modal_sign}>
         {status === "authenticated" ? (
           <div>
             <p>
@@ -103,13 +90,84 @@ const Navbar: React.FC = () => {
           <div>
             <p>Not signed in</p>
             <button onClick={() => signIn()} className={styles["sign-btn"]}>
-              {" "}
-              Sign In{" "}
+              Sign In
             </button>
           </div>
         )}
+
+        <button onClick={() => setDark(!dark)} className={styles["theme-btn"]}>
+          {dark ? <FaSun /> : <FaMoon />}
+        </button>
       </div>
-    </nav>
+      <div className={styles.modal_btns}>
+          <NextLink href="/entries/new" passHref>
+            <button> + New Entry </button>
+          </NextLink>
+          
+          <NextLink href="/entries" passHref>
+            <button> All Entries </button>
+          </NextLink>
+      </div>
+    </div>
+  );
+};
+
+const Navbar: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const { data, status } = useSession();
+  const [dark, setDark] = useDarkMode();
+  return (
+    <>
+      <nav className={styles.navbar}>
+        <div>
+          <NextLink href="/" passHref>
+            <button className="{styles.logo_wrap}">
+              <Logo />
+            </button>
+          </NextLink>
+        </div>
+        <div className={styles.nav_btns}>
+          <NextLink href="/entries/new" passHref>
+            <button> + New Entry </button>
+          </NextLink>
+
+          <NextLink href="/entries" passHref>
+            <button> All Entries </button>
+          </NextLink>
+        </div>
+
+        <div className={styles.right_btns}>
+          <button
+            onClick={() => setDark(!dark)}
+            className={styles["theme-btn"]}
+          >
+            {dark ? <FaSun /> : <FaMoon />}
+          </button>
+          {status === "authenticated" ? (
+            <div>
+              <p>
+                Welcome, <span>{data.user!.name}</span>
+              </p>
+              <button onClick={() => signOut()} className={styles["sign-btn"]}>
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div>
+              <p>Not signed in</p>
+              <button onClick={() => signIn()} className={styles["sign-btn"]}>
+                Sign In
+              </button>
+            </div>
+          )}
+        </div>
+        <ModalBtn
+          open={open}
+          setOpen={setOpen}
+        />
+      </nav>
+      {open && <ModalItems dark={dark} setDark={setDark} status={status} data={data} />}
+    </>
   );
 };
 

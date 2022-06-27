@@ -101,3 +101,18 @@
   border: none;
   color: var(--bkg-color-1)
 }
+
+@media (max-width: 641px) {
+
+  .selector-tags {
+    /* width: 95vw; */
+    max-width: 75%;
+    flex-wrap: wrap;
+    
+  }
+
+  .selector-tags > * {
+    margin: .45em;
+  }
+
+}

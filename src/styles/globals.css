@@ -111,11 +111,8 @@ li {
 */
 main {
   padding: 1em;
-  /* display: flex; */
-  /**/
   position: relative;
 
-  /* width: 75vw; */
   margin: auto;
 }
 
