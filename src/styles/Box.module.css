@@ -22,3 +22,15 @@
   animation-duration: .25s;
   animation-name: pop;
 }
+
+@media (max-width: 641px) {
+  .box {
+    overflow-x: scroll;
+    width: 100%;
+
+    padding: .7em;
+
+
+    direction: center;
+  }
+}

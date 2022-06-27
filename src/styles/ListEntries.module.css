@@ -68,3 +68,9 @@
   padding: 0.4em;
   border-radius: 10px;
 }
+
+@media (max-width: 641px) {
+  .table {
+    overflow-x: scroll;
+  }
+}

@@ -88,7 +88,7 @@ fill: var(--theme-pink);
   text-decoration-line: none;
 }
 
-.modal {
+.modal_bars {
   display: none;
 }
 
