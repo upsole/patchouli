@@ -6,7 +6,7 @@ import { __prod__ } from "~/lib/constants";
 import path from "path";
 import nextConnect from "next-connect";
 import { uploadImageStream } from "../../../server/cloudinaryClient";
-import applyRateLimit from "~/server/rateMiddleware";
+// import applyRateLimit from "~/server/rateMiddleware";
 import { s3Client, spacesConfig } from "../../../server/s3Client";
 import { prisma } from "../../../server/db";
 import { v4 } from "uuid";
