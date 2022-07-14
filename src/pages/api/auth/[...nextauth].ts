@@ -22,4 +22,10 @@ export default NextAuth({
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
   },
+  // callbacks: {
+  //   session: async ({session, user}) => {
+  //     session.dailyUploads = await prisma.user.findUnique({where:{id: user.id}, select: {dailyUploads: true}})
+  //     return session
+  //   }
+  // }
 });

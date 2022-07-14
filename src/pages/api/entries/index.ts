@@ -11,6 +11,7 @@ import { prisma } from "../../../server/db";
 import { v4 } from "uuid";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "next-auth/react";
+import { today, yesterday } from "~/lib/dates";
 
 interface NextRequest extends NextApiRequest {
   files: any;
@@ -42,14 +43,14 @@ handler.use(uploadMiddleware);
 
 // LIST ENTRIES FOR A GIVEN USER
 // if skip & tae are present, slices the returned array in accordance
-// if tag is present, filters by it and returns the whole array 
+// if tag is present, filters by it and returns the whole array
 // currently if both skip/take and tag are present, tag is ignored
 handler.get(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
-    res.end()
-    return
+    res.end();
+    return;
   }
 
   const userExists = await prisma.user.findUnique({
@@ -77,7 +78,7 @@ handler.get(async (req, res) => {
           userId: userExists.id,
         },
         orderBy: [{ updatedAt: "desc" }],
-        include: {tags: true}
+        include: { tags: true },
       });
       res.status(200).json(entries);
     } else {
@@ -95,7 +96,18 @@ handler.post(async (req, res) => {
   } else if (!req.body.title || !req.body.text || !req.body.tags) {
     res.status(400).json({ error: "Missing Fields" });
   } else {
-    
+    //Queries all entries of last 24h with a file attached
+    const uploadsToday = await prisma.entry.findMany({
+      where: {
+        user: { email: session.user?.email },
+        updatedAt: { lte: today(), gte: yesterday() },
+        file_key: { not: null }
+      },
+    });
+    if (uploadsToday.length > 9) {
+      res.status(403).json({error: "Surpassed the maximun number of uploads (10)"})
+    }
+
     const id = v4();
     if (req.files.document) {
       const extension = path.extname(req.files.document[0].originalname);

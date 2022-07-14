@@ -2,22 +2,21 @@ import { listEntries, deleteEntry } from "../lib/axios";
 import { useState, useEffect } from "react";
 import Box from "./Box";
 import ContainerFlex from "./ContainerFlex";
-import {FaTrash, FaExternalLinkAlt} from "react-icons/fa";
+import { FaTrash, FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-import type {Entry} from "~/types";
+import type { Entry } from "~/types";
 
 import styles from "~/styles/LandingEntries.module.css";
-
 
 const filterByK = (arr: Entry[], k: string) => {
   if (k === "all") {
     return arr;
   } else {
-    return arr.filter((e) => e.tags.map(t => t.name).includes(k));
+    return arr.filter((e) => e.tags.map((t) => t.name).includes(k));
   }
 };
 //
@@ -37,11 +36,13 @@ const LandingEntries: React.FC = () => {
   const queryClient = useQueryClient();
   const [tags, setTags] = useState(["all"]);
   const [selectedTag, setSelectedTag] = useState("all");
-  const { status } = useSession();
+  const session = useSession();
   const { data, isLoading } = useQuery(
-    "landingEntries",
+    ["landingEntries", session.status],
     () => {
-      return listEntries();
+      if (session.status === "authenticated") {
+        return listEntries();
+      }
     },
     { refetchOnWindowFocus: false, retry: 1 }
   );
@@ -55,7 +56,7 @@ const LandingEntries: React.FC = () => {
     }
   }, [data]);
   if (isLoading) return <h3>Loading...</h3>;
-  if (data && status === "authenticated") {
+  if (data && session.status === "authenticated") {
     return (
       <>
         <div className={styles["selector-tags"]}>
@@ -80,12 +81,20 @@ const LandingEntries: React.FC = () => {
                       <a href={`/entries/${entry.id}`}> Read more</a>
                     </p>
                   </div>
-                    <img src={entry.img_url ? entry.img_url : "/placeholder_cat.jpg"} alt={entry.title} />
+                  <img
+                    src={entry.img_url ? entry.img_url : "/placeholder_cat.jpg"}
+                    alt={entry.title}
+                  />
                 </div>
                 <div className={styles["bottom-row"]}>
                   <ul className={styles.tags}>
                     {entry.tags.map((t, n: number) => {
-                      return <li key={n}> <a href={`entries/tag/${t.name}`}> {t.name} </a>  </li>;
+                      return (
+                        <li key={n}>
+                          {" "}
+                          <a href={`entries/tag/${t.name}`}> {t.name} </a>{" "}
+                        </li>
+                      );
                     })}
                   </ul>
                   <div className={styles.buttons}>
@@ -95,7 +104,8 @@ const LandingEntries: React.FC = () => {
                           router.push(await getFileSignedUrl(entry.id));
                         }}
                       >
-                        {/* <HiExternalLink /> */} <FaExternalLinkAlt /> Document
+                        {/* <HiExternalLink /> */} <FaExternalLinkAlt />
+                        Document
                       </button>
                     )}
                     <button
