@@ -104,8 +104,10 @@ handler.post(async (req, res) => {
         file_key: { not: null }
       },
     });
-    if (uploadsToday.length > 9) {
+    if (uploadsToday.length > 9 && req.files.document) {
       res.status(403).json({error: "Surpassed the maximun number of uploads (10)"})
+      res.end()
+      return
     }
 
     const id = v4();

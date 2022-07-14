@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const seed = async () => {
   const user = await prisma.user.findUnique({
-    where: { email: "refuse.real@gmail.com" },
+    where: { email: process.env.SEED_EMAIL },
   });
 
   await prisma.entry.create({
