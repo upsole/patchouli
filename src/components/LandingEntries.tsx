@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import type { Entry } from "~/types";
 
 import styles from "~/styles/LandingEntries.module.css";
+import LoginWarning from "./NeedToLogin";
 
 const filterByK = (arr: Entry[], k: string) => {
   if (k === "all") {
@@ -82,7 +83,7 @@ const LandingEntries: React.FC = () => {
                     </p>
                   </div>
                   <img
-                    src={entry.img_url ? entry.img_url : "/placeholder_cat.jpg"}
+                    src={entry.img_url ? entry.img_url : "/placeholder_img.png"}
                     alt={entry.title}
                   />
                 </div>
@@ -126,10 +127,8 @@ const LandingEntries: React.FC = () => {
         </ContainerFlex>
       </>
     );
-  } else if (!data) {
-    return <h3> Empty List!</h3>;
   } else {
-    return <h3> You need to login to access this page </h3>;
+    return <LoginWarning />
   }
 };
 

@@ -1166,6 +1166,13 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
+"@types/express-slow-down@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@types/express-slow-down/-/express-slow-down-1.3.2.tgz#99a5513b3f465efb1cb4f2db6375d36d7ab72fa4"
+  integrity sha512-Jw/orNMX+htFMYMugjhLotS5eRkdId4V5/89vqNXoUfxaHBU8VVIshItDh5YuWeyGeKuPli2fh94ORjYz/dkxA==
+  dependencies:
+    "@types/express" "*"
+
 "@types/express@*":
   version "4.17.13"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.13.tgz#a76e2995728999bab51a33fabce1d705a3709034"
@@ -1528,6 +1535,11 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+clone@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
+  integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
+
 cloudinary-core@^2.10.2:
   version "2.12.3"
   resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.12.3.tgz#6482e472944214ff905c4852da0a4afce14dec2b"
@@ -1658,6 +1670,13 @@ deepmerge@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
   integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
+
+defaults@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/defaults/-/defaults-1.0.3.tgz#c656051e9817d9ff08ed881477f3fe4019f3ef7d"
+  integrity sha512-s82itHOnYrN0Ib8r+z7laQz3sdE+4FP3d9Q7VLO7U+KRT+CR0GsWuyHxzdAY82I7cXv0G/twrqomTJLOssO5HA==
+  dependencies:
+    clone "^1.0.2"
 
 define-properties@^1.1.3, define-properties@^1.1.4:
   version "1.1.4"
@@ -2002,6 +2021,18 @@ esutils@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
+
+express-rate-limit@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.4.0.tgz#b7066afe21157a012ed2b7c9adde386e712485cd"
+  integrity sha512-lxQRZI4gi3qAWTf0/Uqsyugsz57h8bd7QyllXBgJvd6DJKokzW7C5DTaNvwzvAQzwHGFaItybfYGhC8gpu0V2A==
+
+express-slow-down@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/express-slow-down/-/express-slow-down-1.4.0.tgz#89e0aef6c3bb3602b70f06e0824889bd2362cc21"
+  integrity sha512-Tw5aa0plPj2STiuc2SyMw2VSjMvBgLGQHHoPhkIL4iPQcFZDueWBaiLxFZ3SrwrJhiu3b3sHNcsP6lXeWnbwAw==
+  dependencies:
+    defaults "^1.0.3"
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"

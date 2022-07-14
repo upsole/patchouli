@@ -6,12 +6,14 @@ import { __prod__ } from "~/lib/constants";
 import path from "path";
 import nextConnect from "next-connect";
 import { uploadImageStream } from "../../../server/cloudinaryClient";
+import applyRateLimit from "~/server/rateMiddleware";
 import { s3Client, spacesConfig } from "../../../server/s3Client";
 import { prisma } from "../../../server/db";
 import { v4 } from "uuid";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "next-auth/react";
 import { today, yesterday } from "~/lib/dates";
+
 
 interface NextRequest extends NextApiRequest {
   files: any;
@@ -40,6 +42,7 @@ const uploadMiddleware = upload.fields([
   { name: "document", maxCount: 1 },
 ]);
 handler.use(uploadMiddleware);
+// handler.use(applyRateLimit)
 
 // LIST ENTRIES FOR A GIVEN USER
 // if skip & tae are present, slices the returned array in accordance
@@ -146,7 +149,7 @@ handler.post(async (req, res) => {
             : undefined,
         },
       });
-      res.status(200).json({ entry: newEntry });
+      res.status(201).json({ entry: newEntry });
     } else {
       const cloudResponse = req.files.image
         ? ((await uploadImageStream(req.files.image[0].buffer).then(

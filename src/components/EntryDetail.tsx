@@ -43,7 +43,7 @@ const EntryDetailCard: React.FC<{ data: Entry }> = ({ data }) => {
         </p>
       </div>
       <div className={styles.body}>
-        <img src={data.img_url || "/placeholder_cat.jpg"} alt={data.title} />
+        <img src={data.img_url || "/placeholder_img.png"} alt={data.title} />
         <div>
           <p>{data.text}</p>
           {data.file_key ? (
