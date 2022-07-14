@@ -95,12 +95,13 @@ handler.post(async (req, res) => {
   } else if (!req.body.title || !req.body.text || !req.body.tags) {
     res.status(400).json({ error: "Missing Fields" });
   } else {
+    
     const id = v4();
     if (req.files.document) {
       const extension = path.extname(req.files.document[0].originalname);
       const bucketParams = {
         Bucket: $bucket,
-        Key: id + extension,
+        Key: session.user?.name! + "/" + id + extension,
         Body: req.files.document[0].buffer,
       };
       await s3Client.send(new PutObjectCommand(bucketParams));

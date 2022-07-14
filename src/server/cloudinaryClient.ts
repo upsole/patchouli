@@ -8,11 +8,10 @@ cloudinary.v2.config({
 });
 
 export { cloudinary };
-
 const streamImage = (fileBuffer: Buffer) => {
   /* Promisifies upload_stream */
   return new Promise((resolve, reject) => {
-    let stream = cloudinary.v2.uploader.upload_stream((error, result) => {
+    let stream = cloudinary.v2.uploader.upload_stream({upload_preset: "nbirfdgh"}, (error, result) => {
       if (result) {
         resolve(result);
       } else {
