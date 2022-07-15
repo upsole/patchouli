@@ -4,11 +4,30 @@ services:
         container_name: patchy-db
         image: postgres
         ports:
-          - '5433:5432'
+          - "${POSTGRES_PORT}:5432"
         volumes:
           - db:/var/lib/postgrsql/data
         env_file:
           - .env
+        healthcheck: 
+          test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+          interval: 5s
+          timeout: 10s
+          retries: 5
+        restart: on-failure
+
+    nextjs:
+      container_name: patchy-app
+      ports:
+        - '3000:3000'
+      build: ./
+      depends_on: 
+        db:
+          condition: service_healthy
+      env_file:
+        - .env
+      restart: unless-stopped
+
 volumes:
   db:
     driver: local
