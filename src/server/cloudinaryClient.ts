@@ -1,5 +1,6 @@
 import cloudinary from "cloudinary";
 import streamifier from "streamifier";
+import { __prod__ } from "~/lib/constants";
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,7 +12,7 @@ export { cloudinary };
 const streamImage = (fileBuffer: Buffer) => {
   /* Promisifies upload_stream */
   return new Promise((resolve, reject) => {
-    let stream = cloudinary.v2.uploader.upload_stream({upload_preset: "nbirfdgh"}, (error, result) => {
+    let stream = cloudinary.v2.uploader.upload_stream({ upload_preset: __prod__ ? "patchy-app" : "patchy-dev" }, (error, result) => {
       if (result) {
         resolve(result);
       } else {

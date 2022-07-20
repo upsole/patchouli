@@ -116,9 +116,10 @@ handler.post(async (req, res) => {
     const id = v4();
     if (req.files.document) {
       const extension = path.extname(req.files.document[0].originalname);
+      const bucket_directory = __prod__ ? session.user?.name! + "/" + id + extension : "dev/" + session.user?.name! + "/" + id + extension;
       const bucketParams = {
         Bucket: $bucket,
-        Key: session.user?.name! + "/" + id + extension,
+        Key: bucket_directory,
         Body: req.files.document[0].buffer,
       };
       await s3Client.send(new PutObjectCommand(bucketParams));
