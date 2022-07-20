@@ -27,6 +27,7 @@
     "next": "12.1.6",
     "next-auth": "^4.9.0",
     "next-connect": "^0.12.2",
+    "pino": "^8.2.0",
     "prisma": "^3.15.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -46,6 +47,7 @@
     "@types/uuid": "^8.3.4",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
+    "pino-pretty": "^8.1.0",
     "ts-node": "^10.8.1",
     "typescript": "4.7.3"
   }

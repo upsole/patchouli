@@ -7,6 +7,7 @@ import { s3Client, spacesConfig } from "../../../server/s3Client";
 import { cloudinary } from "../../../server/cloudinaryClient";
 import { prisma } from "../../../server/db";
 import { getSession } from "next-auth/react";
+import { logger } from "~/server/pino";
 
 const { $bucket } = spacesConfig;
 
@@ -15,9 +16,8 @@ interface NextRequest extends NextApiRequest {
 }
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
-  onError(err, req, res) {
-    __prod__ ? null : console.log(err);
-    __prod__ ? null : console.log(req);
+  onError(err, _, res) {
+    logger.error(err);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -36,7 +36,8 @@ handler.get(async (req, res) => {
   } else {
     const { id } = req.query;
     const entryExists = await prisma.entry.findUnique({
-      where: { id: id as string }, include: {tags: true}
+      where: { id: id as string },
+      include: { tags: true },
     });
     const userExists = await prisma.user.findUnique({
       where: { email: session.user?.email as string },
@@ -54,8 +55,8 @@ handler.get(async (req, res) => {
         );
         res.status(200).json({ url: signedUrl });
       } else {
-        // returns entry 
-        res.status(200).json(entryExists)
+        // returns entry
+        res.status(200).json(entryExists);
       }
     } else {
       if (!entryExists) {
@@ -75,6 +76,8 @@ handler.delete(async (req, res) => {
     res.status(401).json({ error: "Unauthorized" });
   } else {
     const { id } = req.query;
+    logger.info(`DELETE entry: ${req.query.id} by ${session.user?.name}`);
+    logger.debug({id: id, rawHeaders: req.rawHeaders}, `DELETE entry: ${req.query.id} by ${session.user?.name}`)
     const entryExists = await prisma.entry.findUnique({
       where: { id: id as string },
     });
@@ -87,10 +90,10 @@ handler.delete(async (req, res) => {
           Bucket: $bucket,
           Key: entryExists.file_key as string,
         };
-        await s3Client.send(new DeleteObjectCommand(bucketParams))
+        await s3Client.send(new DeleteObjectCommand(bucketParams));
       }
       if (entryExists.img_url) {
-        await cloudinary.v2.uploader.destroy(entryExists.img_id as string)
+        await cloudinary.v2.uploader.destroy(entryExists.img_id as string);
       }
       await prisma.entry.delete({ where: { id: id as string } });
       res.status(200).json({ message: `Entry ${entryExists!.id} deleted!` });

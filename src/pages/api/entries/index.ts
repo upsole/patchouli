@@ -12,6 +12,8 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "next-auth/react";
 import { today, yesterday } from "~/lib/dates";
 
+import { logger } from "~/server/pino";
+
 interface NextRequest extends NextApiRequest {
   files: any;
 }
@@ -24,9 +26,8 @@ const upload = multer({
 });
 
 const handler = nextConnect<NextRequest, NextApiResponse>({
-  onError(err, req, res) {
-    __prod__ ? null : console.log(err);
-    __prod__ ? null : console.log(req);
+  onError(err, _, res) {
+    logger.error(err);
     res.status(500).json({ error: "Server Error" });
   },
   onNoMatch(_, res) {
@@ -91,6 +92,27 @@ handler.get(async (req, res) => {
 // POST NEW ENTRY
 handler.post(async (req, res) => {
   const session = await getSession({ req });
+  logger.info(`POST request by ${session?.user?.name}`);
+  logger.debug(
+    {
+      rawHeaders: req.rawHeaders,
+      files: {
+        doc: req.files.document
+          ? {
+            name: req.files.document[0].originalname,
+            size: req.files.document[0].size || undefined,
+          }
+          : undefined,
+        img: req.files.image
+          ? {
+            size: req.files.image[0].size || undefined,
+            name: req.files.image[0].originalname,
+          }
+          : undefined,
+      },
+    },
+    `POST request by ${session?.user?.name}`
+  );
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
   } else if (!req.body.title || !req.body.text || !req.body.tags) {
