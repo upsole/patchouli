@@ -2,18 +2,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { UploadApiResponse } from "cloudinary";
 import multer from "multer";
 import { __prod__ } from "~/lib/constants";
-// import streamifier from "stream/promises"
 import path from "path";
 import nextConnect from "next-connect";
 import { uploadImageStream } from "../../../server/cloudinaryClient";
-// import applyRateLimit from "~/server/rateMiddleware";
 import { s3Client, spacesConfig } from "../../../server/s3Client";
 import { prisma } from "../../../server/db";
 import { v4 } from "uuid";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "next-auth/react";
 import { today, yesterday } from "~/lib/dates";
-
 
 interface NextRequest extends NextApiRequest {
   files: any;
@@ -104,81 +101,63 @@ handler.post(async (req, res) => {
       where: {
         user: { email: session.user?.email },
         updatedAt: { lte: today(), gte: yesterday() },
-        file_key: { not: null }
+        file_key: { not: null },
       },
     });
     if (uploadsToday.length > 9 && req.files.document) {
-      res.status(403).json({error: "Surpassed the maximun number of uploads (10)"})
-      res.end()
-      return
+      res
+        .status(403)
+        .json({ error: "Surpassed the maximun number of uploads (10)" });
+      res.end();
+      return;
     }
 
-    const id = v4();
-    if (req.files.document) {
-      const extension = path.extname(req.files.document[0].originalname);
-      const bucket_directory = __prod__ ? session.user?.name! + "/" + id + extension : "dev/" + session.user?.name! + "/" + id + extension;
+    type RequestFile = typeof req.files.document;
+    const s3Upload = async (files: RequestFile) => {
+      const extension = path.extname(files[0].originalname);
+      const bucket_directory = __prod__
+        ? session.user?.name! + "/" + id + extension
+        : "dev/" + session.user?.name! + "/" + id + extension;
       const bucketParams = {
         Bucket: $bucket,
         Key: bucket_directory,
         Body: req.files.document[0].buffer,
       };
       await s3Client.send(new PutObjectCommand(bucketParams));
-      const cloudResponse = req.files.image
-        ? ((await uploadImageStream(req.files.image[0].buffer).then(
-          (i) => i
-        )) as UploadApiResponse)
-        : undefined;
+      return bucketParams;
+    };
 
-      const formattedTags = req.body.tags.split(",").map((t: string) => {
-        return { where: { name: t }, create: { name: t } };
-      });
-      const newEntry = await prisma.entry.create({
-        data: {
-          id: id,
-          title: req.body.title,
-          user: { connect: { email: session.user!.email as string } },
-          tags: {
-            connectOrCreate: formattedTags,
-          },
-          text: req.body.text,
-          file_key: bucketParams.Key,
-          img_url: cloudResponse?.secure_url
-            ? cloudResponse.secure_url
-            : undefined,
-          img_id: cloudResponse?.public_id
-            ? cloudResponse.public_id
-            : undefined,
+    const id = v4();
+    const cloudinaryResponse = req.files.image
+      ? ((await uploadImageStream(req.files.image[0].buffer).then(
+        (i) => i
+      )) as UploadApiResponse)
+      : undefined;
+
+    const formattedTags = req.body.tags.split(",").map((t: string) => {
+      return { where: { name: t }, create: { name: t } };
+    });
+    const newEntry = await prisma.entry.create({
+      data: {
+        id: id,
+        title: req.body.title,
+        user: { connect: { email: session.user!.email as string } },
+        tags: {
+          connectOrCreate: formattedTags,
         },
-      });
-      res.status(201).json({ entry: newEntry });
-    } else {
-      const cloudResponse = req.files.image
-        ? ((await uploadImageStream(req.files.image[0].buffer).then(
-          (i) => i
-        )) as UploadApiResponse)
-        : undefined;
-      const formattedTags = req.body.tags.split(",").map((t: string) => {
-        return { where: { name: t }, create: { name: t } };
-      });
-      const newEntry = await prisma.entry.create({
-        data: {
-          id: id,
-          title: req.body.title,
-          user: { connect: { email: session.user!.email as string } },
-          tags: {
-            connectOrCreate: formattedTags,
-          },
-          text: req.body.text,
-          img_url: cloudResponse?.secure_url
-            ? cloudResponse.secure_url
-            : undefined,
-          img_id: cloudResponse?.public_id
-            ? cloudResponse.public_id
-            : undefined,
-        },
-      });
-      res.status(200).json({ entry: newEntry });
-    }
+        text: req.body.text,
+        file_key: req.files.document
+          ? await s3Upload(req.files.document).then((i) => i.Key)
+          : undefined,
+        img_url: cloudinaryResponse?.secure_url
+          ? cloudinaryResponse.secure_url
+          : undefined,
+        img_id: cloudinaryResponse?.public_id
+          ? cloudinaryResponse.public_id
+          : undefined,
+      },
+    });
+    res.status(201).json({ entry: newEntry });
   }
   res.end();
 });
