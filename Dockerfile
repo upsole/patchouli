@@ -26,6 +26,9 @@ ENV NODE_ENV production
 
 # Run container as non-root (unprivileged) user
 # The "node" user is provided in the Node.js Alpine base image
+RUN mkdir -p logs
+RUN chown -R node:node logs/
+RUN chmod 644 logs/
 USER node
 
 # Launch app with PM2
