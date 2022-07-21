@@ -10,15 +10,16 @@ const transport = pino.transport({
         ignore: "object",
       },
     },
-    {
-      level: "debug",
-      target: "pino/file",
-      options: {
-        translateTime: "SYS:HH:MM:ss dd-mm-yyyy ",
-        ignore: "",
-        destination: "logs/main",
-      },
-    },
+    // DISABLED FOR NOW
+    // {
+    //   level: "debug",
+    //   target: "pino/file",
+    //   options: {
+    //     translateTime: "SYS:HH:MM:ss dd-mm-yyyy ",
+    //     ignore: "",
+    //     destination: "logs/main",
+    //   },
+    // },
   ],
 });
 
