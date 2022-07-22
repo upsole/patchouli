@@ -76,8 +76,8 @@ handler.delete(async (req, res) => {
     res.status(401).json({ error: "Unauthorized" });
   } else {
     const { id } = req.query;
-    logger.info(`DELETE entry: ${req.query.id} by ${session.user?.name}`);
-    logger.debug({id: id, rawHeaders: req.rawHeaders}, `DELETE entry: ${req.query.id} by ${session.user?.name}`)
+    logger.info(`DELETE entry: ${req.query.id} by ${session.user?.email}`);
+    logger.debug({id: id, rawHeaders: req.rawHeaders}, `DELETE entry: ${req.query.id} by ${session.user?.email}`)
     const entryExists = await prisma.entry.findUnique({
       where: { id: id as string },
     });

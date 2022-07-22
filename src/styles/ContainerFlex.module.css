@@ -12,7 +12,7 @@
   margin: 1em;
   flex: 0 1 auto;
 
-  height: 11em;
+  min-height: 11em;
   width: 20em;
 
   overflow: hidden;

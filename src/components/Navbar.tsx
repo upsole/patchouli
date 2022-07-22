@@ -87,7 +87,7 @@ const ModalItems: React.FC<{
         {status === "authenticated" ? (
           <div>
             <p>
-              Welcome, <span>{data.user!.name}</span>
+              <span>{data.user!.email}</span>
             </p>
             <button onClick={() => signOut()} className={styles["sign-btn"]}>
               Sign Out
@@ -153,7 +153,7 @@ const Navbar: React.FC = () => {
           {status === "authenticated" ? (
             <div>
               <p>
-                Welcome, <span>{data.user!.name}</span>
+                <span>{data.user!.email}</span>
               </p>
               <button onClick={() => signOut()} className={styles["sign-btn"]}>
                 Sign Out

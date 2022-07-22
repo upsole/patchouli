@@ -92,7 +92,7 @@ handler.get(async (req, res) => {
 // POST NEW ENTRY
 handler.post(async (req, res) => {
   const session = await getSession({ req });
-  logger.info(`POST request by ${session?.user?.name}`);
+  logger.info(`POST request by ${session?.user?.email}`);
   logger.debug(
     {
       rawHeaders: req.rawHeaders,
