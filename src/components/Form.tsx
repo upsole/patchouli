@@ -35,6 +35,7 @@ const EntryForm: React.FC = () => {
       queryClient.invalidateQueries("landingEntries");
     },
     onError: (err) => {
+      setUploading(false);
       if (axios.isAxiosError(err)) {
         __prod__ ? null : console.error(err);
         //@ts-ignore
