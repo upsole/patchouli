@@ -5,22 +5,16 @@ import { useSession } from "next-auth/react";
 import LoginWarning from "~/components/NeedToLogin";
 
 const Upload: NextPage = () => {
-  const { status } = useSession();
-  // if (status === "authenticated") {
-  //   return (
-  //     <Box>
-  //       <Form />
-  //     </Box>
-  //   );
-  // } else {
-  //   return <LoginWarning />;
-  // }
-
+  const session = useSession();
+  if (session.status === "authenticated") {
     return (
       <Box>
         <Form />
       </Box>
     );
+  } else {
+    return <LoginWarning />;
+  }
 };
 
 export default Upload;

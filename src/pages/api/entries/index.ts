@@ -115,6 +115,8 @@ handler.post(async (req, res) => {
   );
   if (!session) {
     res.status(401).json({ error: "Unauthorized" });
+  } else if (!session.user.emailVerified) {
+    res.status(403).json({ error: "Unverified email" })
   } else if (!req.body.title || !req.body.text || !req.body.tags) {
     res.status(400).json({ error: "Missing Fields" });
   } else {

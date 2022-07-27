@@ -4,7 +4,7 @@ import { prisma } from "../../../server/db";
 // import GitHubProvider from "next-auth/providers/github";
 import Auth0Provider from "next-auth/providers/auth0";
 import EmailProvider from "next-auth/providers/email";
-import {logger} from "~/server/pino";
+import { logger } from "~/server/pino";
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -26,18 +26,18 @@ export default NextAuth({
           pass: process.env.SMTP_PASSWORD,
         },
       },
-      from: process.env.SMTP_SENDER
-    })
+      from: process.env.SMTP_SENDER,
+    }),
   ],
-  callbacks:{
-    async signIn({user, email}) {
+  callbacks: {
+    async signIn({ user, email }) {
       if (email?.verificationRequest) {
-      logger.info(`Verification request by ${user.email}`)
+        logger.info(`Verification request by ${user.email}`);
       } else {
-      logger.info(`Sign in by ${user.email}`)
+        logger.info(`Sign in by ${user.email}`);
       }
-      return true
-    }
+      return true;
+    },
   },
   session: {
     strategy: "database",
@@ -45,6 +45,6 @@ export default NextAuth({
     updateAge: 24 * 60 * 60,
   },
   pages: {
-    signIn: '/auth/login'
-  }
+    signIn: "/auth/login",
+  },
 });

@@ -2,7 +2,7 @@ import Fuse from "fuse.js";
 import { useEffect, useState, useMemo } from "react";
 import Box from "./Box";
 
-import type { Entry } from "~/types";
+import type { Entry } from "~/types/entities";
 
 import styles from "~/styles/ListEntries.module.css";
 

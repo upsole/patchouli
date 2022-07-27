@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { getFileSignedUrl } from "../lib/axios";
 import { useRouter } from "next/router";
 
-import type { Entry } from "~/types";
+import type { Entry } from "~/types/entities";
 
 import styles from "~/styles/LandingEntries.module.css";
 import LoginWarning from "./NeedToLogin";

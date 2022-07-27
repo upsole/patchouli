@@ -1,6 +1,6 @@
 import axios from "axios";
 import { buildFormData } from "./buildFormData";
-import type { Entry } from "~/types";
+import type { Entry } from "~/types/entities";
 
 interface ResponseError {
   error: string;

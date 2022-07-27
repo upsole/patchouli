@@ -1,4 +1,4 @@
-import type { Entry } from "~/types";
+import type { Entry } from "~/types/entities";
 import styles from "~/styles/EntryDetail.module.css";
 import { deleteEntry } from "~/lib/axios";
 import {FaTrash} from "react-icons/fa";
