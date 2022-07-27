@@ -40,7 +40,6 @@ const uploadMiddleware = upload.fields([
   { name: "document", maxCount: 1 },
 ]);
 handler.use(uploadMiddleware);
-// handler.use(applyRateLimit)
 
 // LIST ENTRIES FOR A GIVEN USER
 // if skip & tae are present, slices the returned array in accordance
@@ -157,6 +156,8 @@ handler.post(async (req, res) => {
         (i) => i
       )) as UploadApiResponse)
       : undefined;
+    const userExists = await prisma.user.findUnique({where: {email: session.user!.email as string}})
+    console.log(userExists);
 
     const formattedTags = req.body.tags.split(",").map((t: string) => {
       return { where: { name: t }, create: { name: t } };

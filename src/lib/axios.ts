@@ -1,6 +1,6 @@
 import axios from "axios";
 import { buildFormData } from "./buildFormData";
-import type { Entry } from "~/types/entities";
+import type { Entry, Tag } from "~/types/entities";
 
 interface ResponseError {
   error: string;
@@ -23,6 +23,11 @@ export async function listEntries(skip = 0, take = 9): Promise<Entry[]> {
   return res.data;
 }
 
+export async function listTags(): Promise<Tag[]> {
+  const res = await instance.get('/tags')
+  return res.data;
+}
+
 export async function queryEntriesByTag(tag: string): Promise<Entry[]> {
   const res = await instance.get(`/entries?tag=${tag}`);
   return res.data;
@@ -37,6 +42,7 @@ export async function getEntry(id: string): Promise<Entry> {
   const res = await instance.get(`/entries/${id}`);
   return res.data;
 }
+
 
 export async function postEntry(form: any): Promise<PostResponse> {
   const formData = buildFormData(form);
