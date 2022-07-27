@@ -156,12 +156,14 @@ handler.post(async (req, res) => {
         (i) => i
       )) as UploadApiResponse)
       : undefined;
-    const userExists = await prisma.user.findUnique({where: {email: session.user!.email as string}})
-    console.log(userExists);
+    // const userExists = await prisma.user.findUnique({where: {email: session.user!.email as string}})
+    // console.log(userExists);
 
+    // Tags is processed as a string in our route
     const formattedTags = req.body.tags.split(",").map((t: string) => {
       return { where: { name: t }, create: { name: t } };
     });
+    // console.log(formattedTags);
     const newEntry = await prisma.entry.create({
       data: {
         id: id,

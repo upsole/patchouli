@@ -23,7 +23,7 @@ export async function listEntries(skip = 0, take = 9): Promise<Entry[]> {
   return res.data;
 }
 
-export async function listTags(): Promise<Tag[]> {
+export async function listTags(): Promise<string[]> {
   const res = await instance.get('/tags')
   return res.data;
 }

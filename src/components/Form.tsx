@@ -1,9 +1,9 @@
 import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
-import { useMutation, useQueryClient } from "react-query";
-import { postEntry } from "../lib/axios";
-import * as Yup from "yup";
 import { useState } from "react";
+import { useMutation, useQueryClient, useQuery } from "react-query";
+import { listTags, postEntry } from "../lib/axios";
+import * as Yup from "yup";
 import axios from "axios";
 import { __prod__ } from "~/lib/constants";
 
@@ -12,7 +12,7 @@ import styles from "~/styles/Form.module.css";
 const entrySchema = Yup.object({
   title: Yup.string().required("Required"),
   text: Yup.string().required("Required"),
-  tags: Yup.string().required("Required"),
+  tags: Yup.array().min(1).required("Required")
 });
 
 interface Values {
@@ -21,11 +21,61 @@ interface Values {
   tags: string;
 }
 
+const TagSelector: React.FC<{
+  queryData: string[];
+  handleChange: any;
+  errors: any;
+  touched: any;
+}> = ({ queryData, handleChange, errors, touched }) => {
+  const [data, setData] = useState(queryData);
+  const [newTag, setNewTag] = useState("");
+
+  const handleSubmit = (s: string) => {
+    if (!data.includes(s)) {
+      setData([...data, s]);
+    }
+    setNewTag("");
+  };
+  return (
+    <>
+      <label>
+        Tags {errors.tags && touched.tags && <span>{errors.tags}</span>}
+      </label>
+      <div role="group" onChange={handleChange}>
+        {data.map((t) => (
+          <label key={t}>
+            <input type="checkbox" name="tags" value={t} /> {t}
+          </label>
+        ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={newTag}
+          onChange={(e) => setNewTag(e.currentTarget.value)}
+        />
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSubmit(newTag);
+          }}
+        >
+          +
+        </button>
+      </div>
+    </>
+  );
+};
+
 const EntryForm: React.FC = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [mutationError, setMutationError] = useState<string>();
+  const tagQuery = useQuery("listTags", () => listTags(), {
+    refetchOnWindowFocus: false,
+  });
   const postMutation = useMutation((newEntry: Values) => postEntry(newEntry), {
     onMutate: () => {
       setUploading(true);
@@ -48,11 +98,11 @@ const EntryForm: React.FC = () => {
       initialValues={{ title: "", text: "", tags: "" }}
       validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
-        if(uploading) { return }
-        values.tags = values.tags
-          .replaceAll(/ +/g, ",")
-          .replaceAll(/,+/g, ",")
-          .replace(/,$/, "");
+        actions.validateField("tags")
+        if (uploading) {
+          return;
+        }
+        // console.log(values);
         postMutation
           .mutateAsync(values)
           .then(() => actions.resetForm())
@@ -62,7 +112,10 @@ const EntryForm: React.FC = () => {
       {({ setFieldValue, values, handleChange, errors, touched }) => (
         <Form className={styles.form}>
           <>
-            <label> Title {errors.title && touched.title && <span>{errors.title}</span>} </label>
+            <label>
+              Title
+              {errors.title && touched.title && <span>{errors.title}</span>}
+            </label>
             <input
               type="text"
               name="title"
@@ -71,7 +124,9 @@ const EntryForm: React.FC = () => {
             />
           </>
           <>
-            <label> Text {errors.text && touched.text && <span>{errors.text}</span>} </label>
+            <label>
+              Text {errors.text && touched.text && <span>{errors.text}</span>}
+            </label>
             <textarea
               name="text"
               value={values.text}
@@ -80,16 +135,14 @@ const EntryForm: React.FC = () => {
               rows={8}
             />
           </>
-          <>
-            <label> Tags {errors.tags && touched.tags && <span>{errors.tags}</span>} </label>
-            <input
-              type="text"
-              name="tags"
-              placeholder="coma or space separated values"
-              value={values.tags}
-              onChange={handleChange}
+          {tagQuery.data && (
+            <TagSelector
+              queryData={tagQuery.data}
+              handleChange={handleChange}
+              errors={errors}
+              touched={touched}
             />
-          </>
+          )}
           <>
             <label>Doc</label>
             <input
@@ -114,7 +167,12 @@ const EntryForm: React.FC = () => {
               }}
             />
           </>
-          <button className={uploading ? styles.submitting : styles.submit} type="submit">{uploading ? "Uploading..." : "Submit"}</button>
+          <button
+            className={uploading ? styles.submitting : styles.submit}
+            type="submit"
+          >
+            {uploading ? "Uploading..." : "Submit"}
+          </button>
           {mutationError && <div className={styles.error}>{mutationError}</div>}
         </Form>
       )}
