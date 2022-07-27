@@ -139,7 +139,7 @@ handler.post(async (req, res) => {
     const s3Upload = async (files: RequestFile) => {
       const extension = path.extname(files[0].originalname);
       const bucket_directory = __prod__
-        ? session.user?.name! + "/" + id + extension
+        ? session.user?.email! + "/" + id + extension
         : "dev/" + session.user?.name! + "/" + id + extension;
       const bucketParams = {
         Bucket: $bucket,
