@@ -47,6 +47,7 @@ const EntryForm: React.FC = () => {
       initialValues={{ title: "", text: "", tags: "" }}
       validationSchema={entrySchema}
       onSubmit={async (values, actions) => {
+        if(uploading) { return }
         values.tags = values.tags
           .replaceAll(/ +/g, ",")
           .replaceAll(/,+/g, ",")
