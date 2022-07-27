@@ -3,7 +3,6 @@ import nextConnect from "next-connect";
 import { logger } from "~/server/pino";
 import { getSession } from "next-auth/react";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type {Entry} from "~/types/entities";
 // import tryp {Entry} from "@prisma/client";
 
 const handler = nextConnect<NextApiRequest, NextApiResponse>({
