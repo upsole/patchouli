@@ -119,6 +119,7 @@ handler.post(async (req, res) => {
   } else if (!req.body.title || !req.body.text || !req.body.tags) {
     res.status(400).json({ error: "Missing Fields" });
   } else {
+    const user = await prisma.user.findUnique({where: {email: session.user?.email! }})
     //Queries all entries of last 24h with a file attached
     const uploadsToday = await prisma.entry.findMany({
       where: {
@@ -139,8 +140,8 @@ handler.post(async (req, res) => {
     const s3Upload = async (files: RequestFile) => {
       const extension = path.extname(files[0].originalname);
       const bucket_directory = __prod__
-        ? session.user?.email! + "/" + id + extension
-        : "dev/" + session.user?.name! + "/" + id + extension;
+        ? user?.id + "/" + id + extension
+        : "dev/" + user?.id + "/" + id + extension;
       const bucketParams = {
         Bucket: $bucket,
         Key: bucket_directory,
