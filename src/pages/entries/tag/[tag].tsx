@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { queryEntriesByTag } from "~/lib/axios";
 import type { NextPage } from "next";
 import ListEntries from "~/components/ListEntries";
+import Meta from "~/components/Meta";
 
 const FilteredByTagPage: NextPage = () => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const FilteredByTagPage: NextPage = () => {
   } else if (data) {
     return (
       <>
+        <Meta title={`${tag} tagged entries`} />
         <h3>Entries tagged as {tag}</h3>
         <ListEntries data={data} />
       </>
