@@ -45,3 +45,21 @@
 
   /* width: 70%; */
 }
+
+.verify_box > * + * {
+  margin-top: 1em;
+  /* margin-top: 1em; */
+}
+
+.verify_box > p {
+  background-color: var(--bkg-color-2);
+  border-radius: .5em;
+  padding: 1.45em;
+}
+
+.verify_box a {
+  /* margin-left: 20%; */
+  /* margin-right: 25%; */
+  margin-left: 22%;
+  text-decoration: underline;
+}

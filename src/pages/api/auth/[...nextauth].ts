@@ -43,5 +43,6 @@ export default NextAuth({
   },
   pages: {
     signIn: "/auth/login",
+    verifyRequest: "/auth/verify-request"
   },
 });
